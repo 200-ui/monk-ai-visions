@@ -1,9 +1,8 @@
 
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Cog, Users, Code, MessageSquare, Lightbulb } from 'lucide-react';
+import { Cog, Users, Code, MessageSquare, Lightbulb, ArrowRight } from 'lucide-react';
 
 const services = [
   {
@@ -12,7 +11,6 @@ const services = [
     icon: Cog,
     color: 'bg-monk/10',
     iconColor: 'text-monk',
-    slug: 'ai-business-optimization',
   },
   {
     title: 'AI Assistants for Enterprises',
@@ -20,7 +18,6 @@ const services = [
     icon: Users,
     color: 'bg-gold/10',
     iconColor: 'text-gold',
-    slug: 'ai-assistants-for-enterprises',
   },
   {
     title: 'AI-Powered Web & App Development',
@@ -28,7 +25,6 @@ const services = [
     icon: Code,
     color: 'bg-charcoal/10',
     iconColor: 'text-charcoal',
-    slug: 'ai-powered-web-app-development',
   },
   {
     title: 'AI & Content Generation',
@@ -36,7 +32,6 @@ const services = [
     icon: MessageSquare,
     color: 'bg-monk/10',
     iconColor: 'text-monk',
-    slug: 'ai-content-generation',
   },
   {
     title: 'Custom AI Agent Development',
@@ -44,7 +39,6 @@ const services = [
     icon: Lightbulb,
     color: 'bg-gold/10',
     iconColor: 'text-gold',
-    slug: 'custom-ai-agent-development',
   },
   {
     title: 'AI Consulting & Training',
@@ -52,7 +46,6 @@ const services = [
     icon: Cog,
     color: 'bg-charcoal/10',
     iconColor: 'text-charcoal',
-    slug: 'ai-consulting-training',
   },
 ];
 
@@ -92,34 +85,29 @@ export const Services = () => {
     <section id="services" ref={sectionRef} className="section-padding bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-on-scroll opacity-0 transition-all duration-700">
-          <h2 className="section-title text-3xl md:text-4xl lg:text-5xl">Our Services</h2>
-          <p className="text-charcoal/70 text-lg max-w-2xl mx-auto">
+          <h2 className="section-title">Our Services</h2>
+          <p className="text-charcoal/70 max-w-2xl mx-auto">
             Innovative AI solutions designed to transform your business operations and elevate your digital presence.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <Card key={index} className="animate-on-scroll opacity-0 transition-all duration-700 border border-gray-100 shadow-sm hover:shadow-md card-hover bg-white h-full flex flex-col">
+            <Card key={index} className="animate-on-scroll opacity-0 transition-all duration-700 border border-gray-100 shadow-sm hover:shadow-md card-hover bg-white">
               <CardHeader>
                 <div className={`p-3 rounded-lg inline-block ${service.color} mb-4`}>
-                  <service.icon className={`w-7 h-7 ${service.iconColor}`} />
+                  <service.icon className={`w-6 h-6 ${service.iconColor}`} />
                 </div>
-                <CardTitle className="text-2xl font-semibold">{service.title}</CardTitle>
+                <CardTitle className="text-xl font-semibold">{service.title}</CardTitle>
               </CardHeader>
-              <CardContent className="flex-grow">
-                <CardDescription className="text-charcoal/80 text-lg">
+              <CardContent>
+                <CardDescription className="text-charcoal/80">
                   {service.description}
                 </CardDescription>
               </CardContent>
               <CardFooter>
-                <Button 
-                  component={Link} 
-                  to={`/service/${service.slug}`} 
-                  variant="outline" 
-                  className="w-full text-monk hover:text-white hover:bg-monk border-monk"
-                >
-                  Learn More
+                <Button variant="ghost" className="text-monk hover:text-monk/90 hover:bg-monk/5 p-0 flex items-center">
+                  Learn more <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </CardFooter>
             </Card>

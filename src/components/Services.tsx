@@ -91,37 +91,35 @@ export const Services = () => {
   return (
     <section id="services" ref={sectionRef} className="section-padding bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-on-scroll opacity-0 transition-all duration-700">
-          <h2 className="section-title text-3xl md:text-4xl lg:text-5xl">Our Services</h2>
-          <p className="text-charcoal/70 text-lg max-w-2xl mx-auto">
+        <div className="text-center mb-12 animate-on-scroll opacity-0 transition-all duration-700">
+          <h2 className="section-title text-2xl md:text-3xl lg:text-4xl">Our Services</h2>
+          <p className="text-charcoal/70 text-base max-w-2xl mx-auto">
             Innovative AI solutions designed to transform your business operations and elevate your digital presence.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, index) => (
             <Card key={index} className="animate-on-scroll opacity-0 transition-all duration-700 border border-gray-100 shadow-sm hover:shadow-md card-hover bg-white h-full flex flex-col">
-              <CardHeader>
-                <div className={`p-3 rounded-lg inline-block ${service.color} mb-4`}>
-                  <service.icon className={`w-7 h-7 ${service.iconColor}`} />
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between">
+                  <div className={`p-2 rounded-lg inline-block ${service.color} mb-2`}>
+                    <service.icon className={`w-5 h-5 ${service.iconColor}`} />
+                  </div>
+                  <Link 
+                    to={`/service/${service.slug}`}
+                    className="text-sm text-monk hover:underline"
+                  >
+                    Learn More
+                  </Link>
                 </div>
-                <CardTitle className="text-2xl font-semibold">{service.title}</CardTitle>
+                <CardTitle className="text-lg font-medium">{service.title}</CardTitle>
               </CardHeader>
               <CardContent className="flex-grow">
-                <CardDescription className="text-charcoal/80 text-lg">
+                <CardDescription className="text-charcoal/80 text-sm">
                   {service.description}
                 </CardDescription>
               </CardContent>
-              <CardFooter>
-                <Button 
-                  component={Link} 
-                  to={`/service/${service.slug}`} 
-                  variant="outline" 
-                  className="w-full text-monk hover:text-white hover:bg-monk border-monk"
-                >
-                  Learn More
-                </Button>
-              </CardFooter>
             </Card>
           ))}
         </div>

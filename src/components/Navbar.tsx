@@ -8,10 +8,23 @@ import { BookCallModal } from './BookCallModal';
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true);
   const [showBookCallModal, setShowBookCallModal] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
+      // For mobile responsive mode - hide navbar when scrolled past hero section
+      if (window.innerWidth < 768) { // Mobile breakpoint
+        if (window.scrollY > window.innerHeight) {
+          setShowNavbar(false);
+        } else {
+          setShowNavbar(true);
+        }
+      } else {
+        setShowNavbar(true); // Always show on desktop
+      }
+
+      // For styling
       if (window.scrollY > 50) {
         setScrolled(true);
       } else {
@@ -39,6 +52,8 @@ export const Navbar = () => {
       <header 
         className={`fixed w-full z-50 transition-all duration-300 ${
           scrolled ? 'bg-white/95 backdrop-blur-md shadow-md py-3' : 'bg-transparent py-5'
+        } ${
+          showNavbar ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
         <div className="container mx-auto px-4 flex justify-between items-center">
@@ -54,24 +69,24 @@ export const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            <Link to="/" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>Home</Link>
-            <Link to="/about" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>About Us</Link>
+          <nav className="hidden md:flex items-center gap-6">
+            <Link to="/" className={`font-medium text-sm ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>Home</Link>
+            <Link to="/about" className={`font-medium text-sm ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>About Us</Link>
             <a 
               href="#services" 
               onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}
-              className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors cursor-pointer`}
+              className={`font-medium text-sm ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors cursor-pointer`}
             >
               Services
             </a>
-            <Link to="/projects" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>Featured Projects</Link>
-            <Link to="/faqs" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>FAQs</Link>
+            <Link to="/projects" className={`font-medium text-sm ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>Featured Projects</Link>
+            <Link to="/faqs" className={`font-medium text-sm ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>FAQs</Link>
             <Button 
               variant="outline" 
-              className="bg-transparent border-monk text-monk hover:bg-monk hover:text-white transition-all"
+              className="bg-transparent border-monk text-monk hover:bg-monk hover:text-white transition-all text-sm h-9 px-4 py-2"
               onClick={() => setShowBookCallModal(true)}
             >
-              <Phone className="w-4 h-4 mr-2" /> Book a Call
+              <Phone className="w-3 h-3 mr-2" /> Book a Call
             </Button>
           </nav>
 
@@ -87,7 +102,7 @@ export const Navbar = () => {
             isOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <div className="flex flex-col space-y-6 text-lg">
+          <div className="flex flex-col space-y-6 text-base">
             <Link 
               to="/" 
               className="text-charcoal hover:text-monk transition-colors py-2 border-b border-gray-100"
@@ -125,13 +140,13 @@ export const Navbar = () => {
             </Link>
             <Button 
               variant="default" 
-              className="bg-monk text-white hover:bg-monk/90 transition-all mt-4 w-full"
+              className="bg-monk text-white hover:bg-monk/90 transition-all mt-4 w-full text-sm"
               onClick={() => {
                 setShowBookCallModal(true);
                 closeMenu();
               }}
             >
-              <Phone className="w-4 h-4 mr-2" /> Book a Call
+              <Phone className="w-3 h-3 mr-2" /> Book a Call
             </Button>
           </div>
         </div>

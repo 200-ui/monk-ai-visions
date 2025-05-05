@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Cog, Users, Code, MessageSquare, Bulb, ArrowRight } from 'lucide-react';
+import { Cog, Users, Code, MessageSquare, Lightbulb, ArrowRight } from 'lucide-react';
 
 const services = [
   {
@@ -36,7 +36,7 @@ const services = [
   {
     title: 'Custom AI Agent Development',
     description: 'Domain-specific AI agents for unique business needs across legal, finance, and more.',
-    icon: Bulb,
+    icon: Lightbulb,
     color: 'bg-gold/10',
     iconColor: 'text-gold',
   },

@@ -23,6 +23,7 @@ const timeSlots = [
 ];
 
 const services = [
+  'General Inquiry',
   'AI Business Optimization',
   'AI Assistants for Enterprises',
   'AI-Powered Web & App Development',
@@ -34,6 +35,8 @@ const services = [
 export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
   const [service, setService] = useState('');
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [time, setTime] = useState('');
@@ -44,7 +47,7 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
     
     // Simple validation
     if (!name || !email || !service || !date || !time) {
-      toast.error('Please fill in all fields');
+      toast.error('Please fill in all required fields');
       return;
     }
     
@@ -52,12 +55,14 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
     setSubmitted(true);
     
     // In a real app, you would submit to a backend here
-    console.log({ name, email, service, date, time });
+    console.log({ name, email, phone, address, service, date, time });
     
     // Reset form after 2 seconds and close modal
     setTimeout(() => {
       setName('');
       setEmail('');
+      setPhone('');
+      setAddress('');
       setService('');
       setDate(undefined);
       setTime('');
@@ -88,18 +93,19 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Name *</Label>
               <Input 
                 id="name" 
                 value={name} 
                 onChange={(e) => setName(e.target.value)} 
                 placeholder="Your name"
                 className="focus-visible:ring-monk"
+                required
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Email *</Label>
               <Input 
                 id="email" 
                 type="email" 
@@ -107,12 +113,36 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
                 onChange={(e) => setEmail(e.target.value)} 
                 placeholder="your.email@example.com"
                 className="focus-visible:ring-monk"
+                required
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="service">Service</Label>
-              <Select value={service} onValueChange={setService}>
+              <Label htmlFor="phone">Phone Number</Label>
+              <Input 
+                id="phone" 
+                type="tel" 
+                value={phone} 
+                onChange={(e) => setPhone(e.target.value)} 
+                placeholder="+1 (555) 123-4567"
+                className="focus-visible:ring-monk"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="address">Company Address</Label>
+              <Input 
+                id="address" 
+                value={address} 
+                onChange={(e) => setAddress(e.target.value)} 
+                placeholder="123 Business St, City, Country"
+                className="focus-visible:ring-monk"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="service">Service *</Label>
+              <Select value={service} onValueChange={setService} required>
                 <SelectTrigger className="focus:ring-monk">
                   <SelectValue placeholder="Select a service" />
                 </SelectTrigger>
@@ -128,7 +158,7 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Date</Label>
+                <Label>Date *</Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
@@ -156,8 +186,8 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="time">Time</Label>
-                <Select value={time} onValueChange={setTime}>
+                <Label htmlFor="time">Time *</Label>
+                <Select value={time} onValueChange={setTime} required>
                   <SelectTrigger id="time" className="focus:ring-monk">
                     <SelectValue placeholder="Select time" />
                   </SelectTrigger>
@@ -174,7 +204,7 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
             
             <Button 
               type="submit" 
-              className="w-full bg-monk hover:bg-monk/90 text-white btn-hover mt-4"
+              className="w-full bg-monk hover:bg-monk/90 text-white btn-hover mt-4 text-lg py-6"
             >
               Schedule Call
             </Button>

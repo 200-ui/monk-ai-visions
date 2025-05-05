@@ -1,7 +1,6 @@
 
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
 
 export const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -47,25 +46,25 @@ export const Hero = () => {
             <span className="text-charcoal">with the Wisdom of AI</span>
           </h1>
           
-          <p className="animate-on-scroll opacity-0 transition-all duration-700 delay-300 mt-6 text-lg text-charcoal/80 max-w-lg">
+          <p className="animate-on-scroll opacity-0 transition-all duration-700 delay-300 mt-6 text-xl text-charcoal/80 max-w-lg">
             Blending cutting-edge AI technology with mindful business strategy for sustainable growth and innovation.
           </p>
           
           <div className="animate-on-scroll opacity-0 transition-all duration-700 delay-500 mt-8 flex flex-wrap gap-4">
             <Button 
               size="lg" 
-              className="bg-monk hover:bg-monk/90 text-white btn-hover"
+              className="bg-monk hover:bg-monk/90 text-white text-lg btn-hover"
               onClick={() => scrollToSection('contact')}
             >
-              Contact Us <ArrowRight className="ml-2 h-4 w-4" />
+              Contact Us
             </Button>
             <Button 
               variant="outline" 
               size="lg" 
-              className="border-monk text-monk hover:bg-monk hover:text-white btn-hover"
-              onClick={() => scrollToSection('services')}
+              className="border-monk text-monk hover:bg-monk hover:text-white text-lg btn-hover"
+              onClick={() => scrollToSection('process')}
             >
-              Explore Services
+              Our Process
             </Button>
           </div>
         </div>
@@ -79,13 +78,13 @@ export const Hero = () => {
                 <img 
                   src="/lovable-uploads/92fe9630-74ce-4bf2-87c4-58c598909233.png"
                   alt="The Machine Monk" 
-                  className="w-52 h-52 sm:w-64 sm:h-64 relative z-10 animate-scale-in"
+                  className="w-52 h-52 sm:w-64 sm:h-64 relative z-10 animate-pulse-slow"
                 />
               </div>
             </div>
             
             {/* Tech particles around logo */}
-            {[...Array(6)].map((_, i) => (
+            {[...Array(8)].map((_, i) => (
               <div 
                 key={i}
                 className={`absolute w-6 h-6 rounded-full bg-monk/80 shadow-lg animate-pulse-slow`}
@@ -93,7 +92,8 @@ export const Hero = () => {
                   top: `${Math.random() * 100}%`,
                   left: `${Math.random() * 100}%`,
                   animationDelay: `${i * 0.5}s`,
-                  opacity: 0.6 + Math.random() * 0.4
+                  opacity: 0.6 + Math.random() * 0.4,
+                  animationDuration: `${3 + Math.random() * 4}s`
                 }}
               />
             ))}

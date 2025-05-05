@@ -42,13 +42,13 @@ export const Navbar = () => {
         }`}
       >
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <Link to="/" className="flex items-center gap-2 hover-scale">
+          <Link to="/" className="flex items-center gap-2">
             <img 
               src="/lovable-uploads/92fe9630-74ce-4bf2-87c4-58c598909233.png" 
               alt="The Machine Monk" 
-              className="h-10 w-auto" 
+              className="h-14 w-auto" 
             />
-            <span className={`font-bold text-xl ${scrolled ? 'text-charcoal' : 'text-monk'}`}>
+            <span className={`font-bold text-2xl ${scrolled ? 'text-charcoal' : 'text-monk'}`}>
               The Machine Monk
             </span>
           </Link>
@@ -64,16 +64,11 @@ export const Navbar = () => {
             >
               Services
             </a>
-            <a 
-              href="#contact" 
-              onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}
-              className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors cursor-pointer`}
-            >
-              Contact
-            </a>
+            <Link to="/projects" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>Featured Projects</Link>
+            <Link to="/faqs" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>FAQs</Link>
             <Button 
               variant="outline" 
-              className="bg-transparent border-monk text-monk hover:bg-monk hover:text-white transition-all btn-hover"
+              className="bg-transparent border-monk text-monk hover:bg-monk hover:text-white transition-all"
               onClick={() => setShowBookCallModal(true)}
             >
               <Phone className="w-4 h-4 mr-2" /> Book a Call
@@ -114,16 +109,23 @@ export const Navbar = () => {
             >
               Services
             </a>
-            <a 
-              href="#contact" 
-              onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}
+            <Link 
+              to="/projects" 
               className="text-charcoal hover:text-monk transition-colors py-2 border-b border-gray-100"
+              onClick={closeMenu}
             >
-              Contact
-            </a>
+              Featured Projects
+            </Link>
+            <Link 
+              to="/faqs" 
+              className="text-charcoal hover:text-monk transition-colors py-2 border-b border-gray-100"
+              onClick={closeMenu}
+            >
+              FAQs
+            </Link>
             <Button 
               variant="default" 
-              className="bg-monk text-white hover:bg-monk/90 transition-all mt-4 btn-hover w-full"
+              className="bg-monk text-white hover:bg-monk/90 transition-all mt-4 w-full"
               onClick={() => {
                 setShowBookCallModal(true);
                 closeMenu();

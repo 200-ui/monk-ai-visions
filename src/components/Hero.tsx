@@ -41,25 +41,27 @@ export const Hero = () => {
       
       <div className="container mx-auto px-4 py-20 grid md:grid-cols-2 gap-12 items-center">
         <div className="order-2 md:order-1">
-          <h1 className="animate-on-scroll opacity-0 transition-all duration-700 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight font-serif">
+          <h1 className="animate-on-scroll opacity-0 transition-all duration-700 text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight font-serif">
             <span className="text-gradient">Empowering Businesses</span><br/>
             <span className="text-charcoal">with the Wisdom of AI</span>
           </h1>
           
-          <p className="animate-on-scroll opacity-0 transition-all duration-700 delay-300 mt-5 text-base text-charcoal/80 max-w-lg">
+          <p className="animate-on-scroll opacity-0 transition-all duration-700 delay-300 mt-6 text-xl text-charcoal/80 max-w-lg">
             Blending cutting-edge AI technology with mindful business strategy for sustainable growth and innovation.
           </p>
           
-          <div className="animate-on-scroll opacity-0 transition-all duration-700 delay-500 mt-6 flex flex-wrap gap-4">
+          <div className="animate-on-scroll opacity-0 transition-all duration-700 delay-500 mt-8 flex flex-wrap gap-4">
             <Button 
+              size="lg" 
+              className="bg-monk hover:bg-monk/90 text-white text-lg btn-hover"
               onClick={() => scrollToSection('contact')}
-              className="bg-monk hover:bg-monk/90 text-white text-sm btn-hover h-9 px-4 py-2"
             >
               Contact Us
             </Button>
             <Button 
               variant="outline" 
-              className="border-monk text-monk hover:bg-monk hover:text-white text-sm btn-hover h-9 px-4 py-2"
+              size="lg" 
+              className="border-monk text-monk hover:bg-monk hover:text-white text-lg btn-hover"
               onClick={() => scrollToSection('process')}
             >
               Our Process

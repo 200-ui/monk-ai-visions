@@ -66,35 +66,35 @@ export const Process = () => {
   }, []);
 
   return (
-    <section id="process" ref={sectionRef} className="py-16 md:py-20 bg-gray-50">
+    <section id="process" ref={sectionRef} className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12 animate-on-scroll opacity-0 transition-all duration-700">
-          <h2 className="section-title text-2xl md:text-3xl lg:text-4xl">Our Process</h2>
-          <p className="text-charcoal/70 text-base max-w-3xl mx-auto">
+        <div className="text-center mb-16 animate-on-scroll opacity-0 transition-all duration-700">
+          <h2 className="section-title text-3xl md:text-4xl lg:text-5xl">Our Process</h2>
+          <p className="text-charcoal/80 text-lg max-w-3xl mx-auto">
             Our structured approach ensures we deliver consistent, high-quality AI solutions that drive real business results.
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-4 relative">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-0 relative">
           {/* Connection line */}
-          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-monk via-gold to-monk transform -translate-y-1/2 z-0"></div>
+          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-monk via-gold to-monk transform -translate-y-1/2 z-0"></div>
           
           {processSteps.map((step, index) => (
             <div 
               key={index} 
               className="animate-on-scroll opacity-0 transition-all duration-700 flex-1 z-10"
             >
-              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col relative">
+              <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col relative">
                 {/* Step number */}
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-white rounded-full w-8 h-8 flex items-center justify-center border-2 border-monk font-bold text-monk text-sm">
+                <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center border-2 border-monk font-bold text-monk">
                   {index + 1}
                 </div>
                 
-                <div className={`p-3 rounded-full inline-block ${step.color} mb-4 mx-auto`}>
-                  <step.icon className={`w-5 h-5 ${step.iconColor}`} />
+                <div className={`p-4 rounded-full inline-block ${step.color} mb-6 mx-auto`}>
+                  <step.icon className={`w-8 h-8 ${step.iconColor}`} />
                 </div>
-                <h3 className="text-lg font-medium mb-2 text-center">{step.title}</h3>
-                <p className="text-charcoal/70 text-center text-sm">{step.description}</p>
+                <h3 className="text-2xl font-semibold mb-4 text-center">{step.title}</h3>
+                <p className="text-charcoal/70 text-center text-lg">{step.description}</p>
               </div>
             </div>
           ))}

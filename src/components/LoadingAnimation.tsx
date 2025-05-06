@@ -1,22 +1,29 @@
 
 import { useState, useEffect } from 'react';
+import { Progress } from '@/components/ui/progress';
 
 export const LoadingAnimation = () => {
+  const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
-  const [dots, setDots] = useState<Array<{ angle: number; opacity: number }>>([]);
 
   useEffect(() => {
-    // Create 12 dots in a circle
-    const newDots = Array.from({ length: 12 }, (_, i) => ({
-      angle: (i / 12) * Math.PI * 2,
-      opacity: Math.random() * 0.5 + 0.5
-    }));
-    setDots(newDots);
-
-    // Hide the loading screen after 2 seconds
     const timer = setTimeout(() => {
-      setIsVisible(false);
-    }, 2000);
+      const interval = setInterval(() => {
+        setProgress(oldProgress => {
+          const newProgress = oldProgress + 2;
+          if (newProgress >= 100) {
+            clearInterval(interval);
+            
+            // Hide the loading screen after 100%
+            setTimeout(() => setIsVisible(false), 300);
+            return 100;
+          }
+          return newProgress;
+        });
+      }, 20);
+      
+      return () => clearInterval(interval);
+    }, 300);
     
     return () => clearTimeout(timer);
   }, []);
@@ -24,28 +31,18 @@ export const LoadingAnimation = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-white dark:bg-charcoal z-50">
-      <div className="relative w-32 h-32">
-        {dots.map((dot, i) => (
-          <div 
-            key={i}
-            className="absolute w-2 h-2 rounded-full bg-monk"
-            style={{
-              left: `calc(50% + ${Math.cos(dot.angle) * 60}px)`,
-              top: `calc(50% + ${Math.sin(dot.angle) * 60}px)`,
-              opacity: dot.opacity,
-              animation: `pulse ${0.8 + i * 0.1}s infinite alternate`
-            }}
-          />
-        ))}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <img 
-            src="/lovable-uploads/92fe9630-74ce-4bf2-87c4-58c598909233.png" 
-            alt="The Machine Monk"
-            className="w-24 h-24"
-          />
-        </div>
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-white z-50">
+      <div className="relative w-32 h-32 mb-6 animate-pulse-slow">
+        <img 
+          src="/lovable-uploads/92fe9630-74ce-4bf2-87c4-58c598909233.png" 
+          alt="The Machine Monk"
+          className="w-full h-full"
+        />
       </div>
+      <div className="w-64 mb-4">
+        <Progress value={progress} className="h-2" />
+      </div>
+      <p className="text-monk font-medium">{progress}%</p>
     </div>
   );
 };

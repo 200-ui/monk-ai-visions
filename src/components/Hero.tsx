@@ -46,14 +46,14 @@ export const Hero = () => {
     window.addEventListener('resize', resize);
 
     // Parameters for the dots
-    const numDots = 12;
+    const numDots = 10;
     const dots = [];
     const connectionDistance = 100;
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const orbitRadius = Math.min(canvas.width, canvas.height) * 0.35;
 
-    // Create initial dots in perfect circle
+    // Create initial dots
     for (let i = 0; i < numDots; i++) {
       const angle = (i / numDots) * Math.PI * 2;
       const x = centerX + Math.cos(angle) * orbitRadius;
@@ -62,10 +62,10 @@ export const Hero = () => {
         x,
         y,
         angle,
-        speed: 0.002, // Much slower speed
+        speed: 0.005 + Math.random() * 0.01,
         radius: 3,
         baseOrbit: orbitRadius,
-        wobble: 0 // No wobble for perfect circle
+        wobble: Math.random() * 10
       });
     }
 
@@ -77,8 +77,9 @@ export const Hero = () => {
       dots.forEach((dot, i) => {
         // Update position
         dot.angle += dot.speed;
-        dot.x = centerX + Math.cos(dot.angle) * dot.baseOrbit;
-        dot.y = centerY + Math.sin(dot.angle) * dot.baseOrbit;
+        const wobble = Math.sin(Date.now() * 0.001 + i) * dot.wobble;
+        dot.x = centerX + Math.cos(dot.angle) * (dot.baseOrbit + wobble);
+        dot.y = centerY + Math.sin(dot.angle) * (dot.baseOrbit + wobble);
         
         // Draw dot
         ctx.beginPath();
@@ -126,26 +127,26 @@ export const Hero = () => {
   };
 
   return (
-    <div ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-charcoal dark:to-charcoal/90 pt-20">
+    <div ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-white to-gray-50 pt-20">
       {/* Background Elements */}
-      <div className="absolute -top-40 -right-40 w-96 h-96 bg-monk/5 dark:bg-monk/10 rounded-full blur-3xl"></div>
-      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gold/5 dark:bg-gold/10 rounded-full blur-3xl"></div>
+      <div className="absolute -top-40 -right-40 w-96 h-96 bg-monk/5 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gold/5 rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-4 py-20 grid md:grid-cols-2 gap-12 items-center">
         <div className="order-2 md:order-1">
           <h1 className="animate-on-scroll opacity-0 transition-all duration-700 text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight font-serif">
             <span className="text-gradient">Empowering Businesses</span><br/>
-            <span className="text-charcoal dark:text-white">with the Wisdom of AI</span>
+            <span className="text-charcoal">with the Wisdom of AI</span>
           </h1>
           
-          <p className="animate-on-scroll opacity-0 transition-all duration-700 delay-300 mt-6 text-lg text-charcoal/80 dark:text-white/80 max-w-lg">
+          <p className="animate-on-scroll opacity-0 transition-all duration-700 delay-300 mt-6 text-lg text-charcoal/80 max-w-lg">
             Blending cutting-edge AI technology with mindful business strategy for sustainable growth and innovation.
           </p>
           
           <div className="animate-on-scroll opacity-0 transition-all duration-700 delay-500 mt-8 flex flex-wrap gap-4">
             <Button 
               size="default" 
-              className="bg-monk hover:bg-monk/90 text-white dark:bg-gold dark:hover:bg-gold/90 dark:text-charcoal"
+              className="bg-monk hover:bg-monk/90 text-white"
               onClick={() => scrollToSection('process')}
             >
               Our Process
@@ -153,10 +154,10 @@ export const Hero = () => {
             <Button 
               variant="outline" 
               size="default" 
-              className="border-monk text-monk hover:bg-monk hover:text-white dark:border-gold dark:text-gold dark:hover:bg-gold dark:hover:text-charcoal"
-              onClick={() => scrollToSection('contact')}
+              className="border-monk text-monk hover:bg-monk hover:text-white"
+              onClick={() => scrollToSection('services')}
             >
-              Contact Us
+              Explore Services
             </Button>
           </div>
         </div>
@@ -181,8 +182,8 @@ export const Hero = () => {
       
       {/* Scroll indicator */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-8 h-12 border-2 border-monk dark:border-gold rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-monk dark:bg-gold rounded-full mt-2 animate-pulse-slow"></div>
+        <div className="w-8 h-12 border-2 border-monk rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-monk rounded-full mt-2 animate-pulse-slow"></div>
         </div>
       </div>
     </div>

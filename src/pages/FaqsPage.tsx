@@ -7,8 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect } from 'react';
 
 const faqs = [
   {
@@ -54,81 +53,29 @@ const faqs = [
 ];
 
 const FaqsPage = () => {
-  const [expandedItem, setExpandedItem] = useState<string | null>(null);
-  const [visibleItems, setVisibleItems] = useState<number[]>([]);
-
   useEffect(() => {
     window.scrollTo(0, 0);
-    
-    // Animate FAQs entrance
-    const timeout = setTimeout(() => {
-      const indices = Array.from({ length: faqs.length }, (_, i) => i);
-      setVisibleItems(indices);
-    }, 300);
-    
-    return () => clearTimeout(timeout);
   }, []);
 
-  const handleToggle = (value: string) => {
-    setExpandedItem(expandedItem === value ? null : value);
-  };
-
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-charcoal">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow pt-24">
+      <main className="flex-grow pt-24 bg-white">
         <div className="container mx-auto px-4 py-12">
-          <motion.h1 
-            className="text-4xl font-bold text-center mb-12 font-serif text-charcoal dark:text-white"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+          <h1 className="text-4xl font-bold text-center mb-12 font-serif text-charcoal">
             Frequently Asked Questions
-          </motion.h1>
+          </h1>
           <div className="max-w-3xl mx-auto">
-            <Accordion 
-              type="single" 
-              collapsible 
-              className="space-y-4"
-              value={expandedItem || undefined}
-            >
+            <Accordion type="single" collapsible className="space-y-4">
               {faqs.map((faq, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={visibleItems.includes(index) ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <AccordionItem 
-                    value={`item-${index}`} 
-                    className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-charcoal/30 shadow-sm hover:shadow-md transition-all duration-300"
-                  >
-                    <AccordionTrigger 
-                      onClick={() => handleToggle(`item-${index}`)}
-                      className="px-4 py-3 font-medium text-monk dark:text-gold hover:text-monk/80 dark:hover:text-gold/80 hover:no-underline group"
-                    >
-                      <div className="flex items-center">
-                        <motion.div 
-                          animate={expandedItem === `item-${index}` ? { rotate: 90 } : { rotate: 0 }}
-                          className="mr-2 text-monk dark:text-gold"
-                        >
-                          →
-                        </motion.div>
-                        <span>{faq.question}</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="px-4 pb-4 text-charcoal/80 dark:text-white/80">
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        {faq.answer}
-                      </motion.div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </motion.div>
+                <AccordionItem key={index} value={`item-${index}`} className="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">
+                  <AccordionTrigger className="px-4 py-3 font-medium text-monk hover:text-monk/80 hover:no-underline">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4 pb-4 text-charcoal/80">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
               ))}
             </Accordion>
           </div>

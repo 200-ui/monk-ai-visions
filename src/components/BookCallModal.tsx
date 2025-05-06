@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -25,13 +26,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { format } from 'date-fns';
 
 const formSchema = z.object({
@@ -85,21 +79,21 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto dark:bg-charcoal dark:text-white">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-monk dark:text-gold">Book a Call</DialogTitle>
-          <DialogDescription className="dark:text-white/70">
+          <DialogTitle className="text-2xl font-bold text-monk">Book a Call</DialogTitle>
+          <DialogDescription>
             Schedule a free consultation to discuss how we can help your business leverage AI.
           </DialogDescription>
         </DialogHeader>
 
         {isSubmitted ? (
           <div className="flex flex-col items-center justify-center py-8">
-            <div className="rounded-full bg-green-100 dark:bg-green-900 p-3">
-              <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
+            <div className="rounded-full bg-green-100 p-3">
+              <CheckCircle2 className="h-8 w-8 text-green-600" />
             </div>
-            <h3 className="mt-4 text-xl font-semibold text-charcoal dark:text-white">Booking Successful!</h3>
-            <p className="mt-2 text-center text-charcoal/70 dark:text-white/70">
+            <h3 className="mt-4 text-xl font-semibold text-charcoal">Booking Successful!</h3>
+            <p className="mt-2 text-center text-charcoal/70">
               Thank you for scheduling a call. We'll reach out to confirm your appointment shortly.
             </p>
           </div>
@@ -111,9 +105,9 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="dark:text-white">Name</FormLabel>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Your full name" {...field} className="dark:bg-charcoal/50 dark:border-gray-700 dark:text-white" />
+                      <Input placeholder="Your full name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -125,9 +119,9 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="dark:text-white">Email</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Your email address" type="email" {...field} className="dark:bg-charcoal/50 dark:border-gray-700 dark:text-white" />
+                      <Input placeholder="Your email address" type="email" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -139,9 +133,9 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="dark:text-white">Phone Number</FormLabel>
+                    <FormLabel>Phone Number</FormLabel>
                     <FormControl>
-                      <Input placeholder="Your phone number" type="tel" {...field} className="dark:bg-charcoal/50 dark:border-gray-700 dark:text-white" />
+                      <Input placeholder="Your phone number" type="tel" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -153,9 +147,9 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
                 name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="dark:text-white">Address (Optional)</FormLabel>
+                    <FormLabel>Address (Optional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="Your business address" {...field} className="dark:bg-charcoal/50 dark:border-gray-700 dark:text-white" />
+                      <Input placeholder="Your business address" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -167,14 +161,14 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
                 name="date"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel className="dark:text-white">Preferred Date</FormLabel>
+                    <FormLabel>Preferred Date</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "w-full pl-3 text-left font-normal dark:bg-charcoal/50 dark:border-gray-700 dark:text-white",
+                              "w-full pl-3 text-left font-normal",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -187,13 +181,12 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0 dark:bg-charcoal" align="center">
+                      <PopoverContent className="w-auto p-0" align="center">
                         <Calendar
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
                           disabled={(date) => date < new Date()}
-                          className="dark:bg-charcoal"
                         />
                       </PopoverContent>
                     </Popover>
@@ -207,23 +200,43 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
                 name="service"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="dark:text-white">Service</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="dark:bg-charcoal/50 dark:border-gray-700 dark:text-white">
-                          <SelectValue placeholder="Select a service" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="dark:bg-charcoal dark:border-gray-700">
-                        <SelectItem value="ai-business-optimization">AI Business Optimization</SelectItem>
-                        <SelectItem value="ai-assistants">AI Assistants</SelectItem>
-                        <SelectItem value="web-app-development">Web & App Development</SelectItem>
-                        <SelectItem value="content-generation">Content Generation</SelectItem>
-                        <SelectItem value="ai-agent-development">AI Agent Development</SelectItem>
-                        <SelectItem value="consulting-training">Consulting & Training</SelectItem>
-                        <SelectItem value="general-inquiry">General Inquiry</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormLabel>Service</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="grid grid-cols-2 gap-4"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="ai-business-optimization" id="ai-business-optimization" />
+                          <Label htmlFor="ai-business-optimization">AI Business Optimization</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="ai-assistants" id="ai-assistants" />
+                          <Label htmlFor="ai-assistants">AI Assistants</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="web-app-development" id="web-app-development" />
+                          <Label htmlFor="web-app-development">Web & App Development</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="content-generation" id="content-generation" />
+                          <Label htmlFor="content-generation">Content Generation</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="ai-agent-development" id="ai-agent-development" />
+                          <Label htmlFor="ai-agent-development">AI Agent Development</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="consulting-training" id="consulting-training" />
+                          <Label htmlFor="consulting-training">Consulting & Training</Label>
+                        </div>
+                        <div className="flex items-center space-x-2 col-span-2">
+                          <RadioGroupItem value="general-inquiry" id="general-inquiry" />
+                          <Label htmlFor="general-inquiry">General Inquiry</Label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -234,13 +247,12 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
                 name="message"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="dark:text-white">Message</FormLabel>
+                    <FormLabel>Message</FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="Tell us about your project or needs"
                         {...field}
                         rows={4}
-                        className="dark:bg-charcoal/50 dark:border-gray-700 dark:text-white"
                       />
                     </FormControl>
                     <FormMessage />
@@ -248,7 +260,7 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
                 )}
               />
 
-              <Button type="submit" className="w-full bg-monk hover:bg-monk/90 dark:bg-gold dark:hover:bg-gold/90 dark:text-charcoal">
+              <Button type="submit" className="w-full bg-monk hover:bg-monk/90">
                 Book Your Call
               </Button>
             </form>

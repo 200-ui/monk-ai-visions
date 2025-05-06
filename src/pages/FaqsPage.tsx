@@ -5,8 +5,6 @@ import { Footer } from '@/components/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
-<lov-add-dependency>framer-motion@latest</lov-add-dependency>
-
 const faqs = [
   {
     question: "What AI services does The Machine Monk offer?",

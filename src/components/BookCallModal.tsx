@@ -1,19 +1,42 @@
 
-import { useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+import { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useToast } from '@/components/ui/use-toast';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { toast } from 'sonner';
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { CalendarIcon, CheckCircle2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { format } from 'date-fns';
+
+const formSchema = z.object({
+  name: z.string().min(2, { message: 'Name is required' }),
+  email: z.string().email({ message: 'Valid email is required' }),
+  phone: z.string().min(7, { message: 'Phone number is required' }),
+  address: z.string().optional(),
+  date: z.date({ required_error: 'Please select a date' }),
+  service: z.string({ required_error: 'Please select a service' }),
+  message: z.string().min(10, { message: 'Message should be at least 10 characters' }),
+});
 
 interface BookCallModalProps {
   isOpen: boolean;
@@ -21,199 +44,228 @@ interface BookCallModalProps {
 }
 
 export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
-  const [service, setService] = useState('');
-  const [message, setMessage] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
-  const nameRef = useRef<HTMLInputElement>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { toast } = useToast();
 
-  // Set focus to name field when modal opens
-  useEffect(() => {
-    if (isOpen && nameRef.current) {
-      setTimeout(() => {
-        nameRef.current?.focus();
-      }, 100);
-    }
-  }, [isOpen]);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      message: '',
+    },
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Simple validation
-    if (!name || !email || !service || !message || !agreedToTerms) {
-      toast.error('Please fill in all required fields.');
-      return;
-    }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      toast.error('Please enter a valid email address.');
-      return;
-    }
+    // Show success state
+    setIsSubmitted(true);
+    toast({
+      title: "Booking Successful!",
+      description: `We've received your request and will contact you soon.`,
+    });
     
-    setIsSubmitting(true);
-    
-    // Simulate form submission
+    // Reset form after a delay
     setTimeout(() => {
-      setIsSubmitting(false);
-      toast.success('Your call request has been received. We will contact you soon!');
-      
-      // Reset form and close modal
-      setName('');
-      setEmail('');
-      setPhone('');
-      setAddress('');
-      setService('');
-      setMessage('');
-      setAgreedToTerms(false);
+      form.reset();
+      setIsSubmitted(false);
       onClose();
-    }, 1500);
+    }, 3000);
   };
 
-  const services = [
-    { value: 'ai-business-optimization', label: 'AI Business Optimization' },
-    { value: 'ai-assistants', label: 'Enterprise AI Assistants' },
-    { value: 'web-dev', label: 'AI-Powered Web & App Development' },
-    { value: 'content-gen', label: 'AI & Content Generation' },
-    { value: 'custom-agents', label: 'Custom AI Agent Development' },
-    { value: 'consulting', label: 'AI Consulting & Training' },
-    { value: 'general-inquiry', label: 'General Inquiry' },
-  ];
-
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[500px] dark:bg-charcoal/95 dark:text-white">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center dark:text-white">Book a Call</DialogTitle>
+          <DialogTitle className="text-2xl font-bold text-monk">Book a Call</DialogTitle>
+          <DialogDescription>
+            Schedule a free consultation to discuss how we can help your business leverage AI.
+          </DialogDescription>
         </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div className="grid grid-cols-1 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="dark:text-white">Full Name *</Label>
-              <Input 
-                id="name" 
-                ref={nameRef}
-                value={name} 
-                onChange={(e) => setName(e.target.value)} 
-                placeholder="Your name" 
-                required 
-                className="dark:bg-charcoal/60 dark:border-gray-700 dark:text-white"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="email" className="dark:text-white">Email Address *</Label>
-              <Input 
-                id="email" 
-                type="email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                placeholder="Your email" 
-                required 
-                className="dark:bg-charcoal/60 dark:border-gray-700 dark:text-white"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="phone" className="dark:text-white">Phone Number</Label>
-              <Input 
-                id="phone" 
-                type="tel" 
-                value={phone} 
-                onChange={(e) => setPhone(e.target.value)} 
-                placeholder="Your phone number" 
-                className="dark:bg-charcoal/60 dark:border-gray-700 dark:text-white"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="address" className="dark:text-white">Address</Label>
-              <Input 
-                id="address" 
-                value={address} 
-                onChange={(e) => setAddress(e.target.value)} 
-                placeholder="Your address" 
-                className="dark:bg-charcoal/60 dark:border-gray-700 dark:text-white"
-              />
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="service" className="dark:text-white">Service of Interest *</Label>
-              <Select value={service} onValueChange={setService} required>
-                <SelectTrigger className="w-full dark:bg-charcoal/60 dark:border-gray-700 dark:text-white">
-                  <SelectValue placeholder="Select a service" />
-                </SelectTrigger>
-                <SelectContent className="dark:bg-charcoal/95 dark:border-gray-700">
-                  {services.map((service) => (
-                    <SelectItem key={service.value} value={service.value} className="dark:text-white dark:focus:bg-gray-700">
-                      {service.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+        {isSubmitted ? (
+          <div className="flex flex-col items-center justify-center py-8">
+            <div className="rounded-full bg-green-100 p-3">
+              <CheckCircle2 className="h-8 w-8 text-green-600" />
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="message" className="dark:text-white">Message *</Label>
-              <Textarea 
-                id="message" 
-                value={message} 
-                onChange={(e) => setMessage(e.target.value)} 
-                placeholder="Tell us about your project or inquiry" 
-                rows={4}
-                required 
-                className="resize-none dark:bg-charcoal/60 dark:border-gray-700 dark:text-white"
-              />
-            </div>
-
-            <div className="flex items-start space-x-2 pt-2">
-              <Checkbox 
-                id="terms" 
-                checked={agreedToTerms} 
-                onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
-                className="data-[state=checked]:bg-monk dark:border-gray-500"
-              />
-              <Label 
-                htmlFor="terms" 
-                className="text-sm font-normal text-gray-600 dark:text-gray-300"
-              >
-                I agree to the processing of my data as outlined in the Privacy Policy.
-              </Label>
-            </div>
+            <h3 className="mt-4 text-xl font-semibold text-charcoal">Booking Successful!</h3>
+            <p className="mt-2 text-center text-charcoal/70">
+              Thank you for scheduling a call. We'll reach out to confirm your appointment shortly.
+            </p>
           </div>
+        ) : (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your full name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <DialogFooter className="pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              className="dark:border-gray-600 dark:text-white dark:hover:bg-gray-700"
-            >
-              Cancel
-            </Button>
-            <Button 
-              type="submit" 
-              disabled={isSubmitting}
-              className="bg-monk hover:bg-monk/90 text-white ml-2"
-            >
-              {isSubmitting ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Submitting...
-                </>
-              ) : 'Schedule Call'}
-            </Button>
-          </DialogFooter>
-        </form>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your email address" type="email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone Number</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your phone number" type="tel" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Address (Optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your business address" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Preferred Date</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="center">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) => date < new Date()}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="service"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Service</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="grid grid-cols-2 gap-4"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="ai-business-optimization" id="ai-business-optimization" />
+                          <Label htmlFor="ai-business-optimization">AI Business Optimization</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="ai-assistants" id="ai-assistants" />
+                          <Label htmlFor="ai-assistants">AI Assistants</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="web-app-development" id="web-app-development" />
+                          <Label htmlFor="web-app-development">Web & App Development</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="content-generation" id="content-generation" />
+                          <Label htmlFor="content-generation">Content Generation</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="ai-agent-development" id="ai-agent-development" />
+                          <Label htmlFor="ai-agent-development">AI Agent Development</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="consulting-training" id="consulting-training" />
+                          <Label htmlFor="consulting-training">Consulting & Training</Label>
+                        </div>
+                        <div className="flex items-center space-x-2 col-span-2">
+                          <RadioGroupItem value="general-inquiry" id="general-inquiry" />
+                          <Label htmlFor="general-inquiry">General Inquiry</Label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Message</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Tell us about your project or needs"
+                        {...field}
+                        rows={4}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type="submit" className="w-full bg-monk hover:bg-monk/90">
+                Book Your Call
+              </Button>
+            </form>
+          </Form>
+        )}
       </DialogContent>
     </Dialog>
   );

@@ -14,10 +14,10 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Reduce the loading time to 2 seconds
+    // Simulate loading complete after animation finishes
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 2500);
     
     return () => clearTimeout(timer);
   }, []);
@@ -25,7 +25,7 @@ const Index = () => {
   return (
     <>
       {isLoading && <LoadingAnimation />}
-      <div className="min-h-screen flex flex-col dark:bg-charcoal dark:text-white">
+      <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow">
           <Hero />

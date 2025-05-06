@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Phone } from 'lucide-react';
 import { BookCallModal } from './BookCallModal';
+import { ThemeToggle } from './ThemeToggle';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,7 +51,7 @@ export const Navbar = () => {
     <>
       <header 
         className={`fixed w-full z-50 transition-all duration-300 ${
-          scrolled ? 'bg-white/95 backdrop-blur-md shadow-md py-3' : 'bg-transparent py-5'
+          scrolled ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md py-3' : 'bg-transparent py-5'
         }`}
       >
         <div className="container mx-auto px-4 flex justify-between items-center">
@@ -60,27 +61,21 @@ export const Navbar = () => {
               alt="The Machine Monk" 
               className="h-12 w-auto" 
             />
-            <span className={`font-bold text-xl ${scrolled ? 'text-charcoal' : 'text-monk'}`}>
+            <span className={`font-bold text-xl ${scrolled ? 'text-charcoal dark:text-white' : 'text-monk dark:text-white'}`}>
               The Machine Monk
             </span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link to="/" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>Home</Link>
-            <Link to="/about" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>About Us</Link>
-            <Link to="/projects" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>Projects</Link>
-            <a 
-              href="#services" 
-              onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}
-              className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors cursor-pointer`}
-            >
-              Services
-            </a>
-            <Link to="/faqs" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>FAQs</Link>
+            <Link to="/" className={`font-medium ${scrolled ? 'text-charcoal dark:text-white' : 'text-charcoal dark:text-white'} hover:text-monk transition-colors`}>Home</Link>
+            <Link to="/about" className={`font-medium ${scrolled ? 'text-charcoal dark:text-white' : 'text-charcoal dark:text-white'} hover:text-monk transition-colors`}>About Us</Link>
+            <Link to="/projects" className={`font-medium ${scrolled ? 'text-charcoal dark:text-white' : 'text-charcoal dark:text-white'} hover:text-monk transition-colors`}>Projects</Link>
+            <Link to="/faqs" className={`font-medium ${scrolled ? 'text-charcoal dark:text-white' : 'text-charcoal dark:text-white'} hover:text-monk transition-colors`}>FAQs</Link>
+            <ThemeToggle />
             <Button 
               variant="outline" 
-              className="bg-transparent border-monk text-monk hover:bg-monk hover:text-white transition-all"
+              className="bg-transparent border-monk text-monk hover:bg-monk hover:text-white transition-all dark:border-monk dark:text-monk"
               onClick={() => setShowBookCallModal(true)}
             >
               <Phone className="w-4 h-4 mr-2" /> Book a Call
@@ -90,7 +85,7 @@ export const Navbar = () => {
           {/* Mobile Menu Button - Only show in hero section on homepage */}
           {showMobileMenu && (
             <button 
-              className="md:hidden text-charcoal bg-white/90 p-2 rounded-md" 
+              className="md:hidden text-charcoal dark:text-white bg-white/90 dark:bg-gray-800/90 p-2 rounded-md" 
               onClick={toggleMenu} 
               aria-label="Toggle menu"
             >
@@ -101,46 +96,43 @@ export const Navbar = () => {
 
         {/* Mobile Menu */}
         <div 
-          className={`fixed inset-0 bg-white z-40 pt-20 px-6 md:hidden transition-transform duration-300 ease-in-out ${
+          className={`fixed inset-0 bg-white dark:bg-gray-900 z-40 pt-20 px-6 md:hidden transition-transform duration-300 ease-in-out ${
             isOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
           <div className="flex flex-col space-y-6 text-lg">
             <Link 
               to="/" 
-              className="text-charcoal hover:text-monk transition-colors py-2 border-b border-gray-100"
+              className="text-charcoal dark:text-white hover:text-monk transition-colors py-2 border-b border-gray-100 dark:border-gray-700"
               onClick={closeMenu}
             >
               Home
             </Link>
             <Link 
               to="/about" 
-              className="text-charcoal hover:text-monk transition-colors py-2 border-b border-gray-100"
+              className="text-charcoal dark:text-white hover:text-monk transition-colors py-2 border-b border-gray-100 dark:border-gray-700"
               onClick={closeMenu}
             >
               About Us
             </Link>
             <Link 
               to="/projects" 
-              className="text-charcoal hover:text-monk transition-colors py-2 border-b border-gray-100"
+              className="text-charcoal dark:text-white hover:text-monk transition-colors py-2 border-b border-gray-100 dark:border-gray-700"
               onClick={closeMenu}
             >
               Projects
             </Link>
-            <a 
-              href="#services" 
-              onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}
-              className="text-charcoal hover:text-monk transition-colors py-2 border-b border-gray-100"
-            >
-              Services
-            </a>
             <Link 
               to="/faqs" 
-              className="text-charcoal hover:text-monk transition-colors py-2 border-b border-gray-100"
+              className="text-charcoal dark:text-white hover:text-monk transition-colors py-2 border-b border-gray-100 dark:border-gray-700"
               onClick={closeMenu}
             >
               FAQs
             </Link>
+            <div className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+              <span className="text-charcoal dark:text-white">Dark Mode</span>
+              <ThemeToggle />
+            </div>
             <Button 
               variant="default" 
               className="bg-monk text-white hover:bg-monk/90 transition-all mt-4 w-full"

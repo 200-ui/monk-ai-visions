@@ -38,6 +38,36 @@
     --radius: 0.75rem;
   }
 
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 24 84% 52%; /* Monk orange */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 29% 24%; /* Darker Charcoal */
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 39 91% 61%; /* Gold */
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 24 84% 52%;
+  }
+
   * {
     @apply border-border;
   }
@@ -53,7 +83,7 @@
   }
 
   .monk-border {
-    @apply border-b-2 border-monk/20 pb-2;
+    @apply border-b-2 border-monk/20 dark:border-monk/40 pb-2;
   }
 
   .card-hover {
@@ -104,5 +134,20 @@
 
   .text-gradient {
     @apply bg-gradient-to-r from-monk to-gold bg-clip-text text-transparent;
+  }
+  
+  .faq-hover {
+    @apply transition-all duration-300;
+  }
+  .faq-hover:hover {
+    @apply bg-monk/5 dark:bg-monk/10;
+  }
+  
+  .project-card {
+    @apply transition-all duration-500 hover:shadow-lg hover:-translate-y-2 bg-white dark:bg-gray-800;
+  }
+  
+  .project-card:hover .project-overlay {
+    @apply opacity-100;
   }
 }

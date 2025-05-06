@@ -48,7 +48,7 @@ export const Hero = () => {
     // Parameters for the dots
     const numDots = 10;
     const dots = [];
-    const connectionDistance = 100;
+    const connectionDistance = 120;
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const orbitRadius = Math.min(canvas.width, canvas.height) * 0.35;
@@ -62,10 +62,10 @@ export const Hero = () => {
         x,
         y,
         angle,
-        speed: 0.005 + Math.random() * 0.01,
+        speed: 0.002, // Reduced speed for slower rotation
         radius: 3,
         baseOrbit: orbitRadius,
-        wobble: Math.random() * 10
+        wobble: 0 // Removed wobble for perfect circles
       });
     }
 
@@ -73,40 +73,41 @@ export const Hero = () => {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Update and draw dots
-      dots.forEach((dot, i) => {
+      // Connect all dots with lines first (to draw behind)
+      for (let i = 0; i < dots.length; i++) {
+        const dot = dots[i];
+        for (let j = i + 1; j < dots.length; j++) {
+          const otherDot = dots[j];
+          const dx = dot.x - otherDot.x;
+          const dy = dot.y - otherDot.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < connectionDistance) {
+            ctx.beginPath();
+            ctx.moveTo(dot.x, dot.y);
+            ctx.lineTo(otherDot.x, otherDot.y);
+            
+            // Set line opacity based on distance
+            const opacity = 1 - distance / connectionDistance;
+            ctx.strokeStyle = `rgba(230, 126, 34, ${opacity * 0.5})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      
+      // Update and draw dots on top
+      dots.forEach((dot) => {
         // Update position
         dot.angle += dot.speed;
-        const wobble = Math.sin(Date.now() * 0.001 + i) * dot.wobble;
-        dot.x = centerX + Math.cos(dot.angle) * (dot.baseOrbit + wobble);
-        dot.y = centerY + Math.sin(dot.angle) * (dot.baseOrbit + wobble);
+        dot.x = centerX + Math.cos(dot.angle) * dot.baseOrbit;
+        dot.y = centerY + Math.sin(dot.angle) * dot.baseOrbit;
         
         // Draw dot
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(230, 126, 34, 0.8)';
         ctx.fill();
-        
-        // Connect dots with lines if they're close enough
-        dots.forEach((otherDot, j) => {
-          if (i !== j) {
-            const dx = dot.x - otherDot.x;
-            const dy = dot.y - otherDot.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance < connectionDistance) {
-              ctx.beginPath();
-              ctx.moveTo(dot.x, dot.y);
-              ctx.lineTo(otherDot.x, otherDot.y);
-              
-              // Set line opacity based on distance
-              const opacity = 1 - distance / connectionDistance;
-              ctx.strokeStyle = `rgba(230, 126, 34, ${opacity * 0.5})`;
-              ctx.lineWidth = 1;
-              ctx.stroke();
-            }
-          }
-        });
       });
       
       requestAnimationFrame(animate);
@@ -127,19 +128,19 @@ export const Hero = () => {
   };
 
   return (
-    <div ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-white to-gray-50 pt-20">
+    <div ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-white to-gray-50 pt-20 dark:from-gray-900 dark:to-gray-800">
       {/* Background Elements */}
-      <div className="absolute -top-40 -right-40 w-96 h-96 bg-monk/5 rounded-full blur-3xl"></div>
-      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gold/5 rounded-full blur-3xl"></div>
+      <div className="absolute -top-40 -right-40 w-96 h-96 bg-monk/5 rounded-full blur-3xl dark:bg-monk/10"></div>
+      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gold/5 rounded-full blur-3xl dark:bg-gold/10"></div>
       
       <div className="container mx-auto px-4 py-20 grid md:grid-cols-2 gap-12 items-center">
         <div className="order-2 md:order-1">
           <h1 className="animate-on-scroll opacity-0 transition-all duration-700 text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight font-serif">
             <span className="text-gradient">Empowering Businesses</span><br/>
-            <span className="text-charcoal">with the Wisdom of AI</span>
+            <span className="text-charcoal dark:text-white">with the Wisdom of AI</span>
           </h1>
           
-          <p className="animate-on-scroll opacity-0 transition-all duration-700 delay-300 mt-6 text-lg text-charcoal/80 max-w-lg">
+          <p className="animate-on-scroll opacity-0 transition-all duration-700 delay-300 mt-6 text-lg text-charcoal/80 dark:text-gray-300 max-w-lg">
             Blending cutting-edge AI technology with mindful business strategy for sustainable growth and innovation.
           </p>
           
@@ -154,10 +155,10 @@ export const Hero = () => {
             <Button 
               variant="outline" 
               size="default" 
-              className="border-monk text-monk hover:bg-monk hover:text-white"
-              onClick={() => scrollToSection('services')}
+              className="border-monk text-monk hover:bg-monk hover:text-white dark:border-monk dark:text-monk dark:hover:text-white"
+              onClick={() => scrollToSection('contact')}
             >
-              Explore Services
+              Contact Us
             </Button>
           </div>
         </div>

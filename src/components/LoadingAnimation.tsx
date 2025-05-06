@@ -1,48 +1,81 @@
 
-import { useState, useEffect } from 'react';
-import { Progress } from '@/components/ui/progress';
+import { useState, useEffect, useRef } from 'react';
 
 export const LoadingAnimation = () => {
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
-
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const interval = setInterval(() => {
-        setProgress(oldProgress => {
-          const newProgress = oldProgress + 2;
-          if (newProgress >= 100) {
-            clearInterval(interval);
-            
-            // Hide the loading screen after 100%
-            setTimeout(() => setIsVisible(false), 300);
-            return 100;
-          }
-          return newProgress;
-        });
-      }, 20);
-      
-      return () => clearInterval(interval);
-    }, 300);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
     
-    return () => clearTimeout(timer);
+    // Make sure canvas dimensions match its display size
+    const resize = () => {
+      const { width, height } = canvas.getBoundingClientRect();
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+      }
+    };
+    resize();
+    
+    const startTime = Date.now();
+    const duration = 3000; // 3 seconds for the full circle
+    
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const newProgress = Math.min(elapsed / duration, 1);
+      setProgress(newProgress);
+      
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw progress circle
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = 70;
+      
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+      ctx.strokeStyle = 'rgba(230, 126, 34, 0.2)';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, -Math.PI / 2, (-Math.PI / 2) + (2 * Math.PI * newProgress));
+      ctx.strokeStyle = 'rgba(230, 126, 34, 1)';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+      
+      if (newProgress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        // Hide loading screen after completion
+        setTimeout(() => setIsVisible(false), 200);
+      }
+    };
+    
+    animate();
   }, []);
 
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-white z-50">
-      <div className="relative w-32 h-32 mb-6 animate-pulse-slow">
-        <img 
-          src="/lovable-uploads/92fe9630-74ce-4bf2-87c4-58c598909233.png" 
-          alt="The Machine Monk"
-          className="w-full h-full"
-        />
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-white z-50 dark:bg-gray-900">
+      <div className="relative w-40 h-40">
+        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <img 
+            src="/lovable-uploads/92fe9630-74ce-4bf2-87c4-58c598909233.png" 
+            alt="The Machine Monk"
+            className="w-32 h-32"
+          />
+        </div>
       </div>
-      <div className="w-64 mb-4">
-        <Progress value={progress} className="h-2" />
-      </div>
-      <p className="text-monk font-medium">{progress}%</p>
     </div>
   );
 };

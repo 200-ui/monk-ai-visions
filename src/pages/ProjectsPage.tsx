@@ -3,9 +3,10 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Cog, Users, Code, MessageSquare, Lightbulb, Phone } from 'lucide-react';
+import { Cog, Users, Code, MessageSquare, Lightbulb, Phone, ExternalLink } from 'lucide-react';
 import { BookCallModal } from '@/components/BookCallModal';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const projectsData = [
   {
@@ -15,6 +16,7 @@ const projectsData = [
     icon: Users,
     color: "bg-gold/10",
     iconColor: "text-gold",
+    projectLink: "#"
   },
   {
     title: "Manufacturing Process Optimization",
@@ -23,6 +25,7 @@ const projectsData = [
     icon: Cog,
     color: "bg-monk/10",
     iconColor: "text-monk",
+    projectLink: "#"
   },
   {
     title: "Content Marketing Automation System",
@@ -31,6 +34,7 @@ const projectsData = [
     icon: MessageSquare,
     color: "bg-monk/10",
     iconColor: "text-monk",
+    projectLink: "#"
   },
   {
     title: "Intelligent Web Application Platform",
@@ -39,6 +43,7 @@ const projectsData = [
     icon: Code,
     color: "bg-charcoal/10",
     iconColor: "text-charcoal",
+    projectLink: "#"
   },
   {
     title: "Legal Document Analysis Tool",
@@ -47,6 +52,7 @@ const projectsData = [
     icon: Lightbulb,
     color: "bg-gold/10",
     iconColor: "text-gold",
+    projectLink: "#"
   },
   {
     title: "AI Implementation Training Program",
@@ -55,50 +61,90 @@ const projectsData = [
     icon: Cog,
     color: "bg-charcoal/10",
     iconColor: "text-charcoal",
+    projectLink: "#"
   },
 ];
 
 const ProjectsPage = () => {
   const [showBookCallModal, setShowBookCallModal] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [visibleProjects, setVisibleProjects] = useState<number[]>([]);
   
   useEffect(() => {
     window.scrollTo(0, 0);
+    
+    // Animate projects entrance
+    const timeout = setTimeout(() => {
+      const indices = Array.from({ length: projectsData.length }, (_, i) => i);
+      setVisibleProjects(indices);
+    }, 300);
+    
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow pt-24 bg-white">
+      <main className="flex-grow pt-24 bg-white dark:bg-charcoal">
         <div className="container mx-auto px-4 py-12">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4 font-serif text-charcoal">Featured Projects</h1>
-            <p className="text-lg text-charcoal/70 max-w-3xl mx-auto">
+          <motion.div 
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h1 className="text-4xl font-bold mb-4 font-serif text-charcoal dark:text-white">Featured Projects</h1>
+            <p className="text-lg text-charcoal/70 dark:text-white/70 max-w-3xl mx-auto">
               Explore our portfolio of successful AI implementations that have delivered measurable results for our clients across various industries.
             </p>
-          </div>
+          </motion.div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {projectsData.map((project, index) => (
-              <Card key={index} className="transition-all duration-300 border border-gray-100 shadow-sm hover:shadow-md">
-                <CardHeader>
-                  <div className={`p-3 rounded-lg inline-block ${project.color} mb-4`}>
-                    <project.icon className={`w-6 h-6 ${project.iconColor}`} />
-                  </div>
-                  <CardTitle className="text-xl font-semibold">{project.title}</CardTitle>
-                  <CardDescription className="text-monk font-medium">{project.category}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-charcoal/80">
-                    {project.description}
-                  </p>
-                </CardContent>
-              </Card>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={visibleProjects.includes(index) ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                onMouseEnter={() => setHoveredCard(index)}
+                onMouseLeave={() => setHoveredCard(null)}
+              >
+                <Card 
+                  className={`transition-all duration-300 border border-gray-100 dark:border-gray-700 dark:bg-charcoal/30 shadow-sm ${hoveredCard === index ? 'shadow-lg transform -translate-y-1' : 'hover:shadow-md'}`}
+                >
+                  <CardHeader>
+                    <div className="flex justify-between items-start">
+                      <div className={`p-3 rounded-lg inline-block ${project.color} mb-4`}>
+                        <project.icon className={`w-6 h-6 ${project.iconColor} dark:text-gold`} />
+                      </div>
+                      
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="border-monk text-monk hover:bg-monk hover:text-white dark:border-gold dark:text-gold dark:hover:bg-gold dark:hover:text-charcoal"
+                        asChild
+                      >
+                        <a href={project.projectLink} target="_blank" rel="noopener noreferrer">
+                          Explore <ExternalLink className="w-3 h-3 ml-1" />
+                        </a>
+                      </Button>
+                    </div>
+                    <CardTitle className="text-xl font-semibold dark:text-white">{project.title}</CardTitle>
+                    <CardDescription className="text-monk dark:text-gold font-medium">{project.category}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-charcoal/80 dark:text-white/70">
+                      {project.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
           
           <div className="text-center">
             <Button 
-              className="bg-monk hover:bg-monk/90 text-white"
+              className="bg-monk hover:bg-monk/90 text-white dark:bg-gold dark:hover:bg-gold/90 dark:text-charcoal"
               onClick={() => setShowBookCallModal(true)}
             >
               <Phone className="mr-2 h-4 w-4" /> Discuss Your Project

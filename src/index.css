@@ -38,6 +38,36 @@
     --radius: 0.75rem;
   }
 
+  .dark {
+    --background: 210 29% 12%; /* Dark charcoal */
+    --foreground: 0 0% 98%;
+
+    --card: 210 29% 10%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 210 29% 8%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 39 91% 61%; /* Gold */
+    --primary-foreground: 210 29% 12%;
+
+    --secondary: 210 29% 20%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 210 29% 15%;
+    --muted-foreground: 210 5% 64.9%;
+
+    --accent: 24 84% 52%; /* Monk orange */
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 210 29% 25%;
+    --input: 210 29% 20%;
+    --ring: 39 91% 61%;
+  }
+
   * {
     @apply border-border;
   }
@@ -53,7 +83,7 @@
   }
 
   .monk-border {
-    @apply border-b-2 border-monk/20 pb-2;
+    @apply border-b-2 border-monk/20 dark:border-gold/20 pb-2;
   }
 
   .card-hover {
@@ -103,6 +133,18 @@
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-monk to-gold bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-monk to-gold bg-clip-text text-transparent dark:from-gold dark:to-monk;
+  }
+}
+
+/* Keyframe animations */
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.05);
+    opacity: 1;
   }
 }

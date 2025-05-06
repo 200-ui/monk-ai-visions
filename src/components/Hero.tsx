@@ -62,7 +62,7 @@ export const Hero = () => {
         x,
         y,
         angle,
-        speed: 0.002, // Reduced speed for slower rotation
+        speed: 0.0008, // Reduced speed for slower rotation
         radius: 3,
         baseOrbit: orbitRadius,
         wobble: 0 // Removed wobble for perfect circles
@@ -76,22 +76,24 @@ export const Hero = () => {
       // Connect all dots with lines first (to draw behind)
       for (let i = 0; i < dots.length; i++) {
         const dot = dots[i];
-        for (let j = i + 1; j < dots.length; j++) {
-          const otherDot = dots[j];
-          const dx = dot.x - otherDot.x;
-          const dy = dot.y - otherDot.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          
-          if (distance < connectionDistance) {
-            ctx.beginPath();
-            ctx.moveTo(dot.x, dot.y);
-            ctx.lineTo(otherDot.x, otherDot.y);
+        for (let j = 0; j < dots.length; j++) {
+          if (i !== j) {
+            const otherDot = dots[j];
+            const dx = dot.x - otherDot.x;
+            const dy = dot.y - otherDot.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
             
-            // Set line opacity based on distance
-            const opacity = 1 - distance / connectionDistance;
-            ctx.strokeStyle = `rgba(230, 126, 34, ${opacity * 0.5})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
+            if (distance < connectionDistance) {
+              ctx.beginPath();
+              ctx.moveTo(dot.x, dot.y);
+              ctx.lineTo(otherDot.x, otherDot.y);
+              
+              // Set line opacity based on distance
+              const opacity = 1 - distance / connectionDistance;
+              ctx.strokeStyle = `rgba(230, 126, 34, ${opacity * 0.5})`;
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
           }
         }
       }

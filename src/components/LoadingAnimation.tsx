@@ -65,7 +65,7 @@ export const LoadingAnimation = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-white z-50 dark:bg-gray-900">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-black z-50 dark:bg-black">
       <div className="relative w-40 h-40">
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
         <div className="absolute inset-0 flex items-center justify-center">

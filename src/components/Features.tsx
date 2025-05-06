@@ -21,8 +21,8 @@ const features = [
     title: 'Reliability',
     description: 'Consistent, dependable performance you can count on.',
     icon: BarChart,
-    color: 'bg-charcoal/10',
-    iconColor: 'text-charcoal',
+    color: 'bg-charcoal/10 dark:bg-monk/10',
+    iconColor: 'text-charcoal dark:text-monk',
   },
   {
     title: 'Ethics',
@@ -66,11 +66,11 @@ export const Features = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 bg-white">
+    <section ref={sectionRef} className="py-20 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-on-scroll opacity-0 transition-all duration-700">
-          <h2 className="section-title">Why Choose Us?</h2>
-          <p className="text-charcoal/70 max-w-2xl mx-auto">
+          <h2 className="section-title dark:text-white">Why Choose Us?</h2>
+          <p className="text-charcoal/70 dark:text-gray-300 max-w-2xl mx-auto">
             The Machine Monk offers a unique blend of technical expertise and strategic vision.
           </p>
         </div>
@@ -79,13 +79,13 @@ export const Features = () => {
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className="animate-on-scroll opacity-0 transition-all duration-700 bg-white p-6 rounded-xl shadow-sm hover:shadow-md card-hover border border-gray-100"
+              className="animate-on-scroll opacity-0 transition-all duration-700 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm hover:shadow-md card-hover border border-gray-100 dark:border-gray-700"
             >
               <div className={`p-3 rounded-lg inline-block ${feature.color} mb-4`}>
                 <feature.icon className={`w-6 h-6 ${feature.iconColor}`} />
               </div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-charcoal/70">{feature.description}</p>
+              <h3 className="text-xl font-semibold mb-2 dark:text-white">{feature.title}</h3>
+              <p className="text-charcoal/70 dark:text-gray-300">{feature.description}</p>
             </div>
           ))}
         </div>

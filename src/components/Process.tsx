@@ -24,8 +24,8 @@ const processSteps = [
     title: 'Development',
     description: 'We bring your solution to life, leveraging cutting-edge AI technologies while maintaining close collaboration throughout the development process.',
     icon: Code,
-    color: 'bg-charcoal/10',
-    iconColor: 'text-charcoal'
+    color: 'bg-charcoal/10 dark:bg-gold/10',
+    iconColor: 'text-charcoal dark:text-gold'
   },
   {
     id: 4,
@@ -70,18 +70,18 @@ export const Process = () => {
   }, []);
 
   return (
-    <section id="process" ref={sectionRef} className="py-20 bg-gray-50">
+    <section id="process" ref={sectionRef} className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-on-scroll opacity-0 transition-all duration-700">
-          <h2 className="section-title">Our Process</h2>
-          <p className="text-charcoal/70 max-w-2xl mx-auto">
+          <h2 className="section-title dark:text-white">Our Process</h2>
+          <p className="text-charcoal/70 dark:text-gray-300 max-w-2xl mx-auto">
             Our systematic approach ensures we deliver high-quality AI solutions that drive real business impact.
           </p>
         </div>
 
         <div className="relative">
           {/* Timeline connector */}
-          <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gray-200 -translate-y-1/2 z-0"></div>
+          <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700 -translate-y-1/2 z-0"></div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
             {processSteps.map((step, index) => (
@@ -90,12 +90,12 @@ export const Process = () => {
                 className="animate-on-scroll opacity-0 transition-all duration-700 flex flex-col items-center text-center"
                 style={{ animationDelay: `${index * 200}ms` }}
               >
-                <div className={`${step.color} p-5 rounded-full inline-flex items-center justify-center mb-4 relative z-10 border-4 border-white`}>
+                <div className={`${step.color} p-5 rounded-full inline-flex items-center justify-center mb-4 relative z-10 border-4 border-white dark:border-gray-900`}>
                   <step.icon className={`w-8 h-8 ${step.iconColor}`} />
                 </div>
-                <div className="bg-white p-5 rounded-lg shadow-sm w-full">
-                  <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                  <p className="text-charcoal/70">{step.description}</p>
+                <div className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm w-full">
+                  <h3 className="text-xl font-semibold mb-2 dark:text-white">{step.title}</h3>
+                  <p className="text-charcoal/70 dark:text-gray-300">{step.description}</p>
                 </div>
               </div>
             ))}

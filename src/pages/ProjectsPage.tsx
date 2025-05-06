@@ -55,8 +55,8 @@ const projectsData: Project[] = [
     category: "AI-Powered Web & App Development",
     description: "Developed a web platform with embedded AI capabilities for personalized user experiences, leading to a 53% increase in user engagement.",
     icon: Code,
-    color: "bg-charcoal/10",
-    iconColor: "text-charcoal",
+    color: "bg-charcoal/10 dark:bg-gold/10",
+    iconColor: "text-charcoal dark:text-gold",
     link: "#",
     details: "This web platform features personalized content recommendations, dynamic UI elements that adapt to user behavior, and intelligent search functionality. By analyzing user interactions in real-time, the system continuously optimizes the user experience."
   },
@@ -75,8 +75,8 @@ const projectsData: Project[] = [
     category: "AI Consulting & Training",
     description: "Designed and delivered comprehensive AI training programs that enabled the client's team to independently manage their AI systems.",
     icon: Cog,
-    color: "bg-charcoal/10",
-    iconColor: "text-charcoal",
+    color: "bg-charcoal/10 dark:bg-gold/10",
+    iconColor: "text-charcoal dark:text-gold",
     link: "#",
     details: "The training program covers AI fundamentals, implementation strategies, and ongoing management techniques tailored to the client's specific industry and needs. Participants learn through hands-on workshops and real-world case studies."
   },
@@ -106,7 +106,7 @@ const ProjectsPage = () => {
             {projectsData.map((project, index) => (
               <Card 
                 key={index} 
-                className="project-card overflow-hidden dark:text-white dark:border-gray-700"
+                className="project-card overflow-hidden dark:bg-gray-800 dark:text-white dark:border-gray-700 transition-all duration-300 transform hover:scale-105"
               >
                 <CardHeader>
                   <div className={`p-3 rounded-lg inline-block ${project.color} mb-4 dark:bg-opacity-30`}>

@@ -1,8 +1,7 @@
 
 import { useEffect, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Cog, Users, Code, MessageSquare, Lightbulb, ArrowRight } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Cog, Users, Code, MessageSquare, Lightbulb } from 'lucide-react';
 
 const services = [
   {
@@ -105,11 +104,6 @@ export const Services = () => {
                   {service.description}
                 </CardDescription>
               </CardContent>
-              <CardFooter>
-                <Button variant="ghost" className="text-monk hover:text-monk/90 hover:bg-monk/5 p-0 flex items-center">
-                  Learn more <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </CardFooter>
             </Card>
           ))}
         </div>

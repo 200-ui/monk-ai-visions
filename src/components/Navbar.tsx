@@ -9,14 +9,23 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showBookCallModal, setShowBookCallModal] = useState(false);
+  const [isHeroSection, setIsHeroSection] = useState(true);
+  const [pageYOffset, setPageYOffset] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
+      const currentScrollY = window.scrollY;
+      setPageYOffset(currentScrollY);
+      
+      if (currentScrollY > 50) {
         setScrolled(true);
       } else {
         setScrolled(false);
       }
+      
+      // Check if we're in the hero section
+      // Make the threshold higher than the navbar height to avoid flickering
+      setIsHeroSection(currentScrollY < window.innerHeight - 100);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -34,6 +43,9 @@ export const Navbar = () => {
     }
   };
 
+  // Don't show mobile menu button if we're not in the hero section
+  const showMobileMenu = window.location.pathname === '/' ? isHeroSection : true;
+
   return (
     <>
       <header 
@@ -42,11 +54,11 @@ export const Navbar = () => {
         }`}
       >
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <Link to="/" className="flex items-center gap-2 hover-scale">
+          <Link to="/" className="flex items-center gap-2">
             <img 
               src="/lovable-uploads/92fe9630-74ce-4bf2-87c4-58c598909233.png" 
               alt="The Machine Monk" 
-              className="h-10 w-auto" 
+              className="h-12 w-auto" 
             />
             <span className={`font-bold text-xl ${scrolled ? 'text-charcoal' : 'text-monk'}`}>
               The Machine Monk
@@ -57,6 +69,7 @@ export const Navbar = () => {
           <nav className="hidden md:flex items-center gap-8">
             <Link to="/" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>Home</Link>
             <Link to="/about" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>About Us</Link>
+            <Link to="/projects" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>Projects</Link>
             <a 
               href="#services" 
               onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}
@@ -64,26 +77,26 @@ export const Navbar = () => {
             >
               Services
             </a>
-            <a 
-              href="#contact" 
-              onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}
-              className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors cursor-pointer`}
-            >
-              Contact
-            </a>
+            <Link to="/faqs" className={`font-medium ${scrolled ? 'text-charcoal' : 'text-charcoal'} hover:text-monk transition-colors`}>FAQs</Link>
             <Button 
               variant="outline" 
-              className="bg-transparent border-monk text-monk hover:bg-monk hover:text-white transition-all btn-hover"
+              className="bg-transparent border-monk text-monk hover:bg-monk hover:text-white transition-all"
               onClick={() => setShowBookCallModal(true)}
             >
               <Phone className="w-4 h-4 mr-2" /> Book a Call
             </Button>
           </nav>
 
-          {/* Mobile Menu Button */}
-          <button className="md:hidden text-charcoal" onClick={toggleMenu} aria-label="Toggle menu">
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Menu Button - Only show in hero section on homepage */}
+          {showMobileMenu && (
+            <button 
+              className="md:hidden text-charcoal bg-white/90 p-2 rounded-md" 
+              onClick={toggleMenu} 
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          )}
         </div>
 
         {/* Mobile Menu */}
@@ -107,6 +120,13 @@ export const Navbar = () => {
             >
               About Us
             </Link>
+            <Link 
+              to="/projects" 
+              className="text-charcoal hover:text-monk transition-colors py-2 border-b border-gray-100"
+              onClick={closeMenu}
+            >
+              Projects
+            </Link>
             <a 
               href="#services" 
               onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}
@@ -114,16 +134,16 @@ export const Navbar = () => {
             >
               Services
             </a>
-            <a 
-              href="#contact" 
-              onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}
+            <Link 
+              to="/faqs" 
               className="text-charcoal hover:text-monk transition-colors py-2 border-b border-gray-100"
+              onClick={closeMenu}
             >
-              Contact
-            </a>
+              FAQs
+            </Link>
             <Button 
               variant="default" 
-              className="bg-monk text-white hover:bg-monk/90 transition-all mt-4 btn-hover w-full"
+              className="bg-monk text-white hover:bg-monk/90 transition-all mt-4 w-full"
               onClick={() => {
                 setShowBookCallModal(true);
                 closeMenu();

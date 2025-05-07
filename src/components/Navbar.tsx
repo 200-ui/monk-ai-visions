@@ -47,22 +47,6 @@ export const Navbar = () => {
     };
   }, [isOpen]);
 
-  useEffect(() => {
-    // Handle clicks outside menu to close it
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      // Check if clicked element is outside the menu and not the menu button
-      if (isOpen && !target.closest('[data-menu-container]') && !target.closest('[data-menu-button]')) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [isOpen]);
-
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
@@ -73,9 +57,6 @@ export const Navbar = () => {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-  const showMobileMenu = true;
-  const isDarkMode = document.documentElement.classList.contains('dark');
 
   return (
     <>
@@ -112,22 +93,20 @@ export const Navbar = () => {
             </Button>
           </nav>
 
-          {/* Mobile Menu Button - Always show */}
-          {showMobileMenu && (
-            <button 
-              className="md:hidden text-charcoal dark:text-white bg-white/90 dark:bg-gray-800/90 p-2 rounded-md z-[60]" 
-              onClick={toggleMenu} 
-              aria-label="Toggle menu"
-              data-menu-button
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          )}
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden text-charcoal dark:text-white bg-white/90 dark:bg-gray-800/90 p-2 rounded-md z-[60]" 
+            onClick={toggleMenu} 
+            aria-label="Toggle menu"
+            data-menu-button
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
 
         {/* Mobile Menu - Full overlay with solid background */}
         <div 
-          className={`fixed inset-0 bg-white dark:bg-gray-900 z-50 pt-20 px-6 md:hidden transition-transform duration-300 ease-in-out ${
+          className={`fixed inset-0 bg-white dark:bg-gray-900 z-50 pt-20 px-6 md:hidden transform transition-transform duration-300 ease-in-out ${
             isOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
           data-menu-container

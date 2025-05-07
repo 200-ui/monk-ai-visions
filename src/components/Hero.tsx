@@ -46,12 +46,12 @@ export const Hero = () => {
     window.addEventListener('resize', resize);
 
     // Parameters for the dots
-    const numDots = 12;
+    const numDots = 15;
     const dots = [];
-    const connectionDistance = 120;
+    const connectionDistance = 100;
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const orbitRadius = Math.min(canvas.width, canvas.height) * 0.35;
+    const orbitRadius = Math.min(canvas.width, canvas.height) * 0.38;
 
     // Create initial dots
     for (let i = 0; i < numDots; i++) {
@@ -65,7 +65,8 @@ export const Hero = () => {
         speed: 0.002 + Math.random() * 0.002,
         radius: 3,
         baseOrbit: orbitRadius,
-        wobble: Math.random() * 5
+        wobble: Math.random() * 8,
+        connectionProbability: Math.random()
       });
     }
 
@@ -73,27 +74,59 @@ export const Hero = () => {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Connect all dots with lines first (to draw behind)
+      // Update positions first
+      dots.forEach((dot, i) => {
+        // Update position
+        dot.angle += dot.speed;
+        const wobble = Math.sin(Date.now() * 0.001 + i * 2) * dot.wobble;
+        dot.x = centerX + Math.cos(dot.angle) * (dot.baseOrbit + wobble);
+        dot.y = centerY + Math.sin(dot.angle) * (dot.baseOrbit + wobble);
+        
+        // Randomly change connection probability
+        if (Math.random() < 0.01) {
+          dot.connectionProbability = Math.random();
+        }
+      });
+      
+      // Connect dots with lines conditionally
       for (let i = 0; i < dots.length; i++) {
         const dot = dots[i];
+        
+        // Connect to next dot (circular path)
+        const nextIndex = (i + 1) % dots.length;
+        const nextDot = dots[nextIndex];
+        
+        // Always connect to next dot if they're close enough or with some probability
+        const dx = dot.x - nextDot.x;
+        const dy = dot.y - nextDot.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < connectionDistance || dot.connectionProbability > 0.6) {
+          ctx.beginPath();
+          ctx.moveTo(dot.x, dot.y);
+          ctx.lineTo(nextDot.x, nextDot.y);
+          const opacity = Math.min(1, (connectionDistance - distance) / 50);
+          ctx.strokeStyle = `rgba(230, 126, 34, ${opacity * 0.5})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+        
+        // Connect to some other dots based on distance and probability
         for (let j = 0; j < dots.length; j++) {
-          if (i !== j) {
+          if (i !== j && j !== nextIndex) {
             const otherDot = dots[j];
             const dx = dot.x - otherDot.x;
             const dy = dot.y - otherDot.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            // Always connect adjacent dots in the circle
-            const isAdjacent = (Math.abs(i - j) === 1) || (Math.abs(i - j) === dots.length - 1);
-            
-            if (distance < connectionDistance || isAdjacent) {
+            if (distance < connectionDistance * 0.7 && Math.random() > 0.7) {
               ctx.beginPath();
               ctx.moveTo(dot.x, dot.y);
               ctx.lineTo(otherDot.x, otherDot.y);
               
               // Set line opacity based on distance
-              const opacity = isAdjacent ? 0.5 : 1 - distance / connectionDistance;
-              ctx.strokeStyle = `rgba(230, 126, 34, ${opacity * 0.5})`;
+              const opacity = 1 - distance / connectionDistance;
+              ctx.strokeStyle = `rgba(230, 126, 34, ${opacity * 0.3})`;
               ctx.lineWidth = 1;
               ctx.stroke();
             }
@@ -101,15 +134,8 @@ export const Hero = () => {
         }
       }
       
-      // Update and draw dots on top
-      dots.forEach((dot, i) => {
-        // Update position
-        dot.angle += dot.speed;
-        const wobble = Math.sin(Date.now() * 0.001 + i) * dot.wobble;
-        dot.x = centerX + Math.cos(dot.angle) * (dot.baseOrbit + wobble);
-        dot.y = centerY + Math.sin(dot.angle) * (dot.baseOrbit + wobble);
-        
-        // Draw dot
+      // Draw dots on top
+      dots.forEach((dot) => {
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(230, 126, 34, 0.8)';
@@ -170,7 +196,7 @@ export const Hero = () => {
         </div>
         
         <div className="order-1 md:order-2 flex justify-center md:justify-end animate-on-scroll opacity-0 transition-all duration-1000">
-          <div className="relative w-72 h-72 sm:w-96 sm:h-96">
+          <div className="relative w-80 h-80 sm:w-[420px] sm:h-[420px]">
             {/* Logo centered with canvas for animated dots */}
             <canvas
               ref={canvasRef}
@@ -180,7 +206,7 @@ export const Hero = () => {
               <img 
                 src="/lovable-uploads/92fe9630-74ce-4bf2-87c4-58c598909233.png"
                 alt="The Machine Monk" 
-                className="w-52 h-52 sm:w-64 sm:h-64 relative z-10"
+                className="w-56 h-56 sm:w-72 sm:h-72 relative z-10"
               />
             </div>
           </div>

@@ -47,11 +47,11 @@ export const Contact = () => {
     const form = formRef.current;
     if (!form) return;
     
-    const name = form.name.value;
-    const email = form.email.value;
-    const message = form.message.value;
+    const nameInput = form.elements.namedItem('name') as HTMLInputElement;
+    const emailInput = form.elements.namedItem('email') as HTMLInputElement;
+    const messageInput = form.elements.namedItem('message') as HTMLTextAreaElement;
     
-    if (!name || !email || !message) {
+    if (!nameInput?.value || !emailInput?.value || !messageInput?.value) {
       toast({
         title: "Error",
         description: "Please fill in all fields",

@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Phone } from 'lucide-react';
 import { BookCallModal } from './BookCallModal';
@@ -11,6 +11,7 @@ export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [showBookCallModal, setShowBookCallModal] = useState(false);
   const [pageYOffset, setPageYOffset] = useState(0);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,18 +30,34 @@ export const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    // Close mobile menu when clicking outside
+    // Close mobile menu when route changes
+    setIsOpen(false);
+  }, [location]);
+
+  useEffect(() => {
+    // Handle body scroll lock when menu is open
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    // Handle clicks outside menu to close it
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (isOpen && !target.closest('[data-menu-container]')) {
+      // Check if clicked element is outside the menu and not the menu button
+      if (isOpen && !target.closest('[data-menu-container]') && !target.closest('[data-menu-button]')) {
         setIsOpen(false);
       }
     };
 
-    if (isOpen) {
-      document.addEventListener('click', handleClickOutside);
-    }
-
+    document.addEventListener('click', handleClickOutside);
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
@@ -58,7 +75,6 @@ export const Navbar = () => {
   };
 
   const showMobileMenu = true;
-
   const isDarkMode = document.documentElement.classList.contains('dark');
 
   return (
@@ -99,19 +115,19 @@ export const Navbar = () => {
           {/* Mobile Menu Button - Always show */}
           {showMobileMenu && (
             <button 
-              className="md:hidden text-charcoal dark:text-white bg-white/90 dark:bg-gray-800/90 p-2 rounded-md" 
+              className="md:hidden text-charcoal dark:text-white bg-white/90 dark:bg-gray-800/90 p-2 rounded-md z-[60]" 
               onClick={toggleMenu} 
               aria-label="Toggle menu"
-              data-menu-container
+              data-menu-button
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           )}
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Full overlay with solid background */}
         <div 
-          className={`fixed inset-0 bg-white dark:bg-gray-900 z-40 pt-20 px-6 md:hidden transition-transform duration-300 ease-in-out ${
+          className={`fixed inset-0 bg-white dark:bg-gray-900 z-50 pt-20 px-6 md:hidden transition-transform duration-300 ease-in-out ${
             isOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
           data-menu-container

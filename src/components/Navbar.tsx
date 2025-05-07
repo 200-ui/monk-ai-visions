@@ -11,12 +11,17 @@ export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [showBookCallModal, setShowBookCallModal] = useState(false);
   const [pageYOffset, setPageYOffset] = useState(0);
+  const [showHamburgerMenu, setShowHamburgerMenu] = useState(true);
   const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setPageYOffset(currentScrollY);
+      
+      // Check if scrolled past first section (approximately 100vh)
+      const firstSectionHeight = window.innerHeight;
+      setShowHamburgerMenu(currentScrollY < firstSectionHeight);
       
       if (currentScrollY > 50) {
         setScrolled(true);
@@ -32,6 +37,8 @@ export const Navbar = () => {
   useEffect(() => {
     // Close mobile menu when route changes
     setIsOpen(false);
+    // Reset scroll position detection
+    setShowHamburgerMenu(true);
   }, [location]);
 
   useEffect(() => {
@@ -93,15 +100,17 @@ export const Navbar = () => {
             </Button>
           </nav>
 
-          {/* Mobile Menu Button */}
-          <button 
-            className="md:hidden text-charcoal dark:text-white bg-white/90 dark:bg-gray-800/90 p-2 rounded-md z-[60]" 
-            onClick={toggleMenu} 
-            aria-label="Toggle menu"
-            data-menu-button
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Menu Button - only show in first section */}
+          {showHamburgerMenu && (
+            <button 
+              className="md:hidden text-charcoal dark:text-white bg-white/90 dark:bg-gray-800/90 p-2 rounded-md z-[60]" 
+              onClick={toggleMenu} 
+              aria-label="Toggle menu"
+              data-menu-button
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          )}
         </div>
 
         {/* Mobile Menu - Full overlay with solid background */}

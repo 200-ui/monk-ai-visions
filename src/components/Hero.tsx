@@ -46,7 +46,7 @@ export const Hero = () => {
     window.addEventListener('resize', resize);
 
     // Parameters for the dots
-    const numDots = 10;
+    const numDots = 12;
     const dots = [];
     const connectionDistance = 120;
     const centerX = canvas.width / 2;
@@ -62,10 +62,10 @@ export const Hero = () => {
         x,
         y,
         angle,
-        speed: 0.0005, // Reduced speed for even slower rotation
+        speed: 0.002 + Math.random() * 0.002,
         radius: 3,
         baseOrbit: orbitRadius,
-        wobble: 0 // Removed wobble for perfect circles
+        wobble: Math.random() * 5
       });
     }
 
@@ -102,11 +102,12 @@ export const Hero = () => {
       }
       
       // Update and draw dots on top
-      dots.forEach((dot) => {
+      dots.forEach((dot, i) => {
         // Update position
         dot.angle += dot.speed;
-        dot.x = centerX + Math.cos(dot.angle) * dot.baseOrbit;
-        dot.y = centerY + Math.sin(dot.angle) * dot.baseOrbit;
+        const wobble = Math.sin(Date.now() * 0.001 + i) * dot.wobble;
+        dot.x = centerX + Math.cos(dot.angle) * (dot.baseOrbit + wobble);
+        dot.y = centerY + Math.sin(dot.angle) * (dot.baseOrbit + wobble);
         
         // Draw dot
         ctx.beginPath();
@@ -153,9 +154,9 @@ export const Hero = () => {
             <Button 
               size="default" 
               className="bg-monk hover:bg-monk/90 text-white"
-              onClick={() => scrollToSection('process')}
+              onClick={() => scrollToSection('services')}
             >
-              Our Process
+              Our Services
             </Button>
             <Button 
               variant="outline" 
@@ -186,7 +187,7 @@ export const Hero = () => {
         </div>
       </div>
       
-      {/* Scroll indicator - Hide on mobile */}
+      {/* Scroll indicator - Hide on mobile and in responsive mode */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce hidden md:block">
         <div className="w-8 h-12 border-2 border-monk rounded-full flex justify-center">
           <div className="w-1 h-3 bg-monk rounded-full mt-2 animate-pulse-slow"></div>

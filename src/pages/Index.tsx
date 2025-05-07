@@ -17,26 +17,29 @@ const Index = () => {
     // Simulate loading complete after animation finishes
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000); // Match the animation duration in LoadingAnimation.tsx
+    }, 2000); // Match the animation duration in LoadingAnimation.tsx
     
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <>
-      {isLoading && <LoadingAnimation />}
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow">
-          <Hero />
-          <Features />
-          <Services />
-          <Process />
-          <Contact />
-        </main>
-        <Footer />
-        <BackToTop />
-      </div>
+      {isLoading ? (
+        <LoadingAnimation />
+      ) : (
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+          <main className="flex-grow">
+            <Hero />
+            <Features />
+            <Services />
+            <Process />
+            <Contact />
+          </main>
+          <Footer />
+          <BackToTop />
+        </div>
+      )}
     </>
   );
 };

@@ -37,7 +37,7 @@ export const LoadingAnimation = () => {
     resize();
     
     const startTime = Date.now();
-    const duration = 3000; // 3 seconds for the full circle
+    const duration = 2000; // 2 seconds for the full circle
     
     const animate = () => {
       const elapsed = Date.now() - startTime;

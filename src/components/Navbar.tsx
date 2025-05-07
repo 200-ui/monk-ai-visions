@@ -28,6 +28,24 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    // Close mobile menu when clicking outside
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (isOpen && !target.closest('[data-menu-container]')) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [isOpen]);
+
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
@@ -39,8 +57,9 @@ export const Navbar = () => {
     }
   };
 
-  // Always show mobile menu button
   const showMobileMenu = true;
+
+  const isDarkMode = document.documentElement.classList.contains('dark');
 
   return (
     <>
@@ -83,6 +102,7 @@ export const Navbar = () => {
               className="md:hidden text-charcoal dark:text-white bg-white/90 dark:bg-gray-800/90 p-2 rounded-md" 
               onClick={toggleMenu} 
               aria-label="Toggle menu"
+              data-menu-container
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -91,9 +111,10 @@ export const Navbar = () => {
 
         {/* Mobile Menu */}
         <div 
-          className={`fixed inset-0 bg-white/95 dark:bg-gray-900/98 z-40 pt-20 px-6 md:hidden transition-transform duration-300 ease-in-out ${
+          className={`fixed inset-0 bg-white dark:bg-gray-900 z-40 pt-20 px-6 md:hidden transition-transform duration-300 ease-in-out ${
             isOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
+          data-menu-container
         >
           <div className="flex flex-col space-y-6 text-lg">
             <Link 

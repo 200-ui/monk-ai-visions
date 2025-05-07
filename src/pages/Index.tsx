@@ -17,7 +17,7 @@ const Index = () => {
     // Simulate loading complete after animation finishes
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2500);
+    }, 3000); // Match the animation duration in LoadingAnimation.tsx
     
     return () => clearTimeout(timer);
   }, []);

@@ -72,25 +72,25 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" ref={sectionRef} className="section-padding bg-gray-50">
+    <section id="contact" ref={sectionRef} className="section-padding bg-gray-50 dark:bg-gray-900 dark:text-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-on-scroll opacity-0 transition-all duration-700">
-          <h2 className="section-title">Contact Us</h2>
-          <p className="text-charcoal/70 max-w-2xl mx-auto">
+          <h2 className="section-title dark:text-white">Contact Us</h2>
+          <p className="text-charcoal/70 dark:text-gray-300 max-w-2xl mx-auto">
             Ready to transform your business with AI? Get in touch with our team of experts.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div className="animate-on-scroll opacity-0 transition-all duration-700">
-            <div className="bg-white p-8 rounded-xl shadow-md">
-              <h3 className="text-2xl font-semibold mb-6 monk-border inline-block">Send us a message</h3>
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md">
+              <h3 className="text-2xl font-semibold mb-6 monk-border inline-block dark:text-white">Send us a message</h3>
               
               {isSubmitted ? (
                 <div className="flex flex-col items-center justify-center py-8 animate-fade-in">
                   <CheckCircle className="text-monk w-16 h-16 mb-4" />
-                  <h4 className="text-xl font-semibold text-charcoal">Message Sent!</h4>
-                  <p className="text-center text-muted-foreground mt-2">
+                  <h4 className="text-xl font-semibold text-charcoal dark:text-white">Message Sent!</h4>
+                  <p className="text-center text-muted-foreground dark:text-gray-300 mt-2">
                     We'll get back to you as soon as possible.
                   </p>
                 </div>
@@ -102,7 +102,7 @@ export const Contact = () => {
                       placeholder="Your Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="focus-visible:ring-monk"
+                      className="focus-visible:ring-monk dark:bg-gray-700 dark:text-white dark:placeholder-gray-300"
                     />
                   </div>
                   <div>
@@ -111,7 +111,7 @@ export const Contact = () => {
                       placeholder="Your Email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="focus-visible:ring-monk"
+                      className="focus-visible:ring-monk dark:bg-gray-700 dark:text-white dark:placeholder-gray-300"
                     />
                   </div>
                   <div>
@@ -120,7 +120,7 @@ export const Contact = () => {
                       rows={5}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      className="focus-visible:ring-monk resize-none"
+                      className="focus-visible:ring-monk resize-none dark:bg-gray-700 dark:text-white dark:placeholder-gray-300"
                     />
                   </div>
                   <Button 
@@ -148,8 +148,8 @@ export const Contact = () => {
           </div>
 
           <div className="animate-on-scroll opacity-0 transition-all duration-700 delay-300">
-            <div className="bg-white p-8 rounded-xl shadow-md">
-              <h3 className="text-2xl font-semibold mb-6 monk-border inline-block">Contact Information</h3>
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md">
+              <h3 className="text-2xl font-semibold mb-6 monk-border inline-block dark:text-white">Contact Information</h3>
               
               <div className="space-y-6">
                 <div className="flex items-start">
@@ -157,8 +157,8 @@ export const Contact = () => {
                     <Mail className="text-monk w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-charcoal">Email Us</h4>
-                    <p className="text-charcoal/70 mt-1">info@themachinemonk.com</p>
+                    <h4 className="font-medium text-charcoal dark:text-white">Email Us</h4>
+                    <p className="text-charcoal/70 dark:text-gray-300 mt-1">info@themachinemonk.com</p>
                   </div>
                 </div>
                 
@@ -167,8 +167,8 @@ export const Contact = () => {
                     <Phone className="text-monk w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-charcoal">Call Us</h4>
-                    <p className="text-charcoal/70 mt-1">+1 (555) 123-4567</p>
+                    <h4 className="font-medium text-charcoal dark:text-white">Call Us</h4>
+                    <p className="text-charcoal/70 dark:text-gray-300 mt-1">+1 (555) 123-4567</p>
                   </div>
                 </div>
                 
@@ -177,14 +177,14 @@ export const Contact = () => {
                     <MapPin className="text-monk w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-charcoal">Visit Us</h4>
-                    <p className="text-charcoal/70 mt-1">123 AI Avenue, Tech City<br/>Innovation District, CA 94103</p>
+                    <h4 className="font-medium text-charcoal dark:text-white">Visit Us</h4>
+                    <p className="text-charcoal/70 dark:text-gray-300 mt-1">123 AI Avenue, Tech City<br/>Innovation District, CA 94103</p>
                   </div>
                 </div>
               </div>
               
-              <div className="mt-8 pt-6 border-t border-gray-100">
-                <h4 className="font-medium text-charcoal mb-4">Follow Us</h4>
+              <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
+                <h4 className="font-medium text-charcoal dark:text-white mb-4">Follow Us</h4>
                 <div className="flex space-x-4">
                   {['twitter', 'facebook', 'linkedin', 'instagram'].map((platform) => (
                     <a 
@@ -192,7 +192,7 @@ export const Contact = () => {
                       href={`https://${platform}.com`} 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      className="bg-gray-100 hover:bg-monk/10 hover-scale p-3 rounded-full transition-colors"
+                      className="bg-gray-100 dark:bg-gray-700 hover:bg-monk/10 hover-scale p-3 rounded-full transition-colors"
                     >
                       <img 
                         src={`https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/${platform}.svg`} 

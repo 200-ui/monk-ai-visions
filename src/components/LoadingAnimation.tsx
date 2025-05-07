@@ -5,6 +5,19 @@ export const LoadingAnimation = () => {
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  
+  useEffect(() => {
+    // Check the current theme before rendering
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme) {
+      setIsDarkMode(savedTheme === 'dark');
+    } else if (prefersDark) {
+      setIsDarkMode(prefersDark);
+    }
+  }, []);
   
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -65,7 +78,7 @@ export const LoadingAnimation = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-black z-50 dark:bg-black">
+    <div className={`fixed inset-0 flex flex-col items-center justify-center z-50 ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-b from-white to-gray-50'}`}>
       <div className="relative w-40 h-40">
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
         <div className="absolute inset-0 flex items-center justify-center">

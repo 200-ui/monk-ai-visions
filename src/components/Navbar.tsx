@@ -10,7 +10,6 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showBookCallModal, setShowBookCallModal] = useState(false);
-  const [isHeroSection, setIsHeroSection] = useState(true);
   const [pageYOffset, setPageYOffset] = useState(0);
 
   useEffect(() => {
@@ -23,10 +22,6 @@ export const Navbar = () => {
       } else {
         setScrolled(false);
       }
-      
-      // Check if we're in the hero section
-      // Make the threshold higher than the navbar height to avoid flickering
-      setIsHeroSection(currentScrollY < window.innerHeight - 100);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -44,8 +39,8 @@ export const Navbar = () => {
     }
   };
 
-  // Don't show mobile menu button if we're not in the hero section
-  const showMobileMenu = window.location.pathname === '/' ? isHeroSection : true;
+  // Always show mobile menu button
+  const showMobileMenu = true;
 
   return (
     <>
@@ -61,7 +56,7 @@ export const Navbar = () => {
               alt="The Machine Monk" 
               className="h-12 w-auto" 
             />
-            <span className={`font-bold text-xl ${scrolled ? 'text-charcoal dark:text-white' : 'text-monk dark:text-white'}`}>
+            <span className={`font-bold text-xl ${scrolled ? 'text-charcoal dark:text-white' : 'text-charcoal dark:text-white'}`}>
               The Machine Monk
             </span>
           </Link>
@@ -82,7 +77,7 @@ export const Navbar = () => {
             </Button>
           </nav>
 
-          {/* Mobile Menu Button - Only show in hero section on homepage */}
+          {/* Mobile Menu Button - Always show */}
           {showMobileMenu && (
             <button 
               className="md:hidden text-charcoal dark:text-white bg-white/90 dark:bg-gray-800/90 p-2 rounded-md" 
@@ -96,7 +91,7 @@ export const Navbar = () => {
 
         {/* Mobile Menu */}
         <div 
-          className={`fixed inset-0 bg-white dark:bg-gray-900 z-40 pt-20 px-6 md:hidden transition-transform duration-300 ease-in-out ${
+          className={`fixed inset-0 bg-white/95 dark:bg-gray-900/98 z-40 pt-20 px-6 md:hidden transition-transform duration-300 ease-in-out ${
             isOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >

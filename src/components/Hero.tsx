@@ -62,7 +62,7 @@ export const Hero = () => {
         x,
         y,
         angle,
-        speed: 0.0008, // Reduced speed for slower rotation
+        speed: 0.0005, // Reduced speed for even slower rotation
         radius: 3,
         baseOrbit: orbitRadius,
         wobble: 0 // Removed wobble for perfect circles
@@ -83,13 +83,16 @@ export const Hero = () => {
             const dy = dot.y - otherDot.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            if (distance < connectionDistance) {
+            // Always connect adjacent dots in the circle
+            const isAdjacent = (Math.abs(i - j) === 1) || (Math.abs(i - j) === dots.length - 1);
+            
+            if (distance < connectionDistance || isAdjacent) {
               ctx.beginPath();
               ctx.moveTo(dot.x, dot.y);
               ctx.lineTo(otherDot.x, otherDot.y);
               
               // Set line opacity based on distance
-              const opacity = 1 - distance / connectionDistance;
+              const opacity = isAdjacent ? 0.5 : 1 - distance / connectionDistance;
               ctx.strokeStyle = `rgba(230, 126, 34, ${opacity * 0.5})`;
               ctx.lineWidth = 1;
               ctx.stroke();
@@ -183,8 +186,8 @@ export const Hero = () => {
         </div>
       </div>
       
-      {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+      {/* Scroll indicator - Hide on mobile */}
+      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce hidden md:block">
         <div className="w-8 h-12 border-2 border-monk rounded-full flex justify-center">
           <div className="w-1 h-3 bg-monk rounded-full mt-2 animate-pulse-slow"></div>
         </div>

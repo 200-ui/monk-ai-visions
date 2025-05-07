@@ -25,7 +25,7 @@ const projectsData: Project[] = [
     category: "AI Assistants for Enterprises",
     description: "Developed an intelligent customer service platform that reduced response time by 65% and increased customer satisfaction ratings by 42%.",
     icon: Users,
-    color: "bg-gold/10",
+    color: "bg-gold/10 dark:bg-gold/10",
     iconColor: "text-gold",
     link: "#",
     details: "Our AI-powered customer service solution integrates natural language processing to understand customer queries and machine learning to continuously improve response accuracy. The platform includes sentiment analysis to gauge customer emotions and route complex issues to human agents when necessary."
@@ -35,8 +35,8 @@ const projectsData: Project[] = [
     category: "AI Business Optimization",
     description: "Implemented AI algorithms that analyzed production data to identify inefficiencies, resulting in a 28% increase in output and 15% reduction in costs.",
     icon: Cog,
-    color: "bg-monk/10",
-    iconColor: "text-monk",
+    color: "bg-monk/10 dark:bg-gold/10",
+    iconColor: "text-monk dark:text-gold",
     link: "#",
     details: "By collecting and analyzing data from IoT sensors throughout the manufacturing process, our AI system identified bottlenecks and optimization opportunities. The solution provides real-time dashboards and predictive maintenance alerts to prevent costly downtime."
   },
@@ -45,8 +45,8 @@ const projectsData: Project[] = [
     category: "AI & Content Generation",
     description: "Created an AI-driven content generation system that produces SEO-optimized articles, increasing organic traffic by 87% and conversion rates by 35%.",
     icon: MessageSquare,
-    color: "bg-monk/10",
-    iconColor: "text-monk",
+    color: "bg-monk/10 dark:bg-gold/10",
+    iconColor: "text-monk dark:text-gold",
     link: "#",
     details: "Our content generation platform uses advanced language models to create engaging, original content tailored to specific industries and audiences. The system analyzes trending topics, competitor content, and SEO data to ensure maximum visibility and engagement."
   },
@@ -65,7 +65,7 @@ const projectsData: Project[] = [
     category: "Custom AI Agent Development",
     description: "Built a specialized AI agent that analyzes legal documents to extract critical information, reducing document review time by 75%.",
     icon: Lightbulb,
-    color: "bg-gold/10",
+    color: "bg-gold/10 dark:bg-gold/10",
     iconColor: "text-gold",
     link: "#",
     details: "Our legal document analysis tool uses natural language processing to identify key clauses, potential risks, and inconsistencies across large volumes of contracts and legal documents. The system provides detailed reports and highlights areas requiring human review."
@@ -153,14 +153,14 @@ const ProjectsPage = () => {
         open={selectedProject !== null} 
         onOpenChange={() => setSelectedProject(null)}
       >
-        <DialogContent className="max-w-3xl dark:bg-gray-800 dark:text-white">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto dark:bg-gray-800 dark:text-white mx-4 w-[calc(100vw-2rem)] md:w-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-monk">{selectedProject?.title}</DialogTitle>
           </DialogHeader>
           <div className="mt-4">
             <div className="flex items-center mb-4">
               <div className={`p-3 rounded-lg ${selectedProject?.color} dark:bg-opacity-30 mr-4`}>
-                {selectedProject?.icon && <selectedProject.icon className={`w-6 h-6 ${selectedProject.iconColor}`} />}
+                {selectedProject?.icon && <selectedProject.icon className={`w-6 h-6 ${selectedProject?.iconColor}`} />}
               </div>
               <span className="font-semibold text-monk">{selectedProject?.category}</span>
             </div>
@@ -171,18 +171,18 @@ const ProjectsPage = () => {
               <h3 className="text-lg font-semibold mb-2 dark:text-white">Project Details</h3>
               <p className="text-charcoal/80 dark:text-gray-300">{selectedProject?.details}</p>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
               {selectedProject?.link && (
                 <Button 
                   variant="outline" 
-                  className="border-monk text-monk hover:bg-monk hover:text-white dark:text-white dark:border-monk"
+                  className="border-monk text-monk hover:bg-monk hover:text-white dark:text-white dark:border-monk w-full sm:w-auto"
                   onClick={() => window.open(selectedProject.link, '_blank')}
                 >
                   View Live Project <ExternalLink className="ml-2 h-4 w-4" />
                 </Button>
               )}
               <Button 
-                className="bg-monk hover:bg-monk/90 text-white ml-auto"
+                className="bg-monk hover:bg-monk/90 text-white w-full sm:w-auto sm:ml-auto"
                 onClick={() => {
                   setSelectedProject(null);
                   setShowBookCallModal(true);

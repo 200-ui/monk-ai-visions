@@ -33,7 +33,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email to user
     const userConfirmationEmail = await resend.emails.send({
-      from: "The Machine Monk <noreply@oscardhamala.com.np>",
+      from: "The Machine Monk <info@oscardhamala.com.np>",
       to: [formData.email],
       subject: type === 'book-call' 
         ? "Thank you for booking a call with The Machine Monk!"
@@ -45,7 +45,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification email to themachinemonk.ai@gmail.com
     const notificationEmail = await resend.emails.send({
-      from: "The Machine Monk <noreply@oscardhamala.com.np>",
+      from: "The Machine Monk <info@oscardhamala.com.np>",
       to: ["themachinemonk.ai@gmail.com"],
       subject: type === 'book-call' 
         ? `New Call Booking from ${formData.name}`
@@ -104,10 +104,8 @@ function generateUserConfirmationEmail(type: string, formData: any): string {
         <!-- Content -->
         <div style="padding: 40px 30px;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <div style="width: 60px; height: 60px; background-color: #22c55e; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
-              <svg width="30" height="30" fill="#ffffff" viewBox="0 0 24 24">
-                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-              </svg>
+            <div style="width: 80px; height: 80px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+              <img src="https://themachinemonk.com/lovable-uploads/73c26315-166f-452f-9e6a-a72deaaad39b.png" alt="The Machine Monk Logo" style="width: 80px; height: 80px; object-fit: contain;" />
             </div>
             <h2 style="color: #1f2937; margin: 0; font-size: 24px;">Thank You, ${formData.name}!</h2>
           </div>
@@ -136,14 +134,6 @@ function generateUserConfirmationEmail(type: string, formData: any): string {
                 : 'We have received your message and will get back to you as soon as possible.'
               }
             </p>
-          </div>
-
-          <!-- CTA Button -->
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="https://themachinemonk.com" 
-               style="display: inline-block; background: linear-gradient(135deg, #8B4513 0%, #D4AF37 100%); color: #ffffff; text-decoration: none; padding: 15px 30px; border-radius: 8px; font-weight: bold; font-size: 16px;">
-              Visit Our Website
-            </a>
           </div>
         </div>
 

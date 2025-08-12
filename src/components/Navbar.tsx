@@ -19,9 +19,8 @@ export const Navbar = () => {
       const currentScrollY = window.scrollY;
       setPageYOffset(currentScrollY);
       
-      // Check if scrolled past first section (approximately 100vh)
-      const firstSectionHeight = window.innerHeight;
-      setShowHamburgerMenu(currentScrollY < firstSectionHeight);
+      // Hide hamburger menu after minimal scrolling (50px)
+      setShowHamburgerMenu(currentScrollY < 50);
       
       if (currentScrollY > 50) {
         setScrolled(true);
@@ -100,7 +99,7 @@ export const Navbar = () => {
             </Button>
           </nav>
 
-          {/* Mobile Menu Button - only show in first section */}
+          {/* Mobile Menu Button - hide after minimal scrolling */}
           {showHamburgerMenu && (
             <button 
               className="md:hidden text-charcoal dark:text-white bg-white/90 dark:bg-gray-800/90 p-2 rounded-md z-[60]" 

@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -40,7 +39,7 @@ export const Contact = () => {
     };
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Simple form validation
@@ -60,14 +59,42 @@ export const Contact = () => {
       return;
     }
     
-    // Simulate form submission
-    toast({
-      title: "Message sent!",
-      description: "We'll get back to you soon.",
-    });
-    
-    // Reset form
-    form.reset();
+    try {
+      // Call the email service
+      const response = await fetch('https://fwnsfbpjlhnoaskcxvat.supabase.co/functions/v1/send-emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'contact',
+          formData: {
+            name: nameInput.value,
+            email: emailInput.value,
+            message: messageInput.value,
+          }
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send emails');
+      }
+
+      toast({
+        title: "Message sent!",
+        description: "We've received your message and sent you a confirmation email.",
+      });
+      
+      // Reset form
+      form.reset();
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      toast({
+        title: "Error",
+        description: "There was an error sending your message. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
   
   return (

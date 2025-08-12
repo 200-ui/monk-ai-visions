@@ -59,22 +59,52 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      // Call the email service
+      const response = await fetch('https://fwnsfbpjlhnoaskcxvat.supabase.co/functions/v1/send-emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'book-call',
+          formData: {
+            name: values.name,
+            email: values.email,
+            phone: values.phone,
+            address: values.address,
+            date: values.date?.toISOString(),
+            service: values.service,
+            message: values.message,
+          }
+        }),
+      });
 
-    // Show success state
-    setIsSubmitted(true);
-    toast({
-      title: "Booking Successful!",
-      description: `We've received your request and will contact you soon.`,
-    });
-    
-    // Reset form after a delay
-    setTimeout(() => {
-      form.reset();
-      setIsSubmitted(false);
-      onClose();
-    }, 3000);
+      if (!response.ok) {
+        throw new Error('Failed to send emails');
+      }
+
+      // Show success state
+      setIsSubmitted(true);
+      toast({
+        title: "Booking Successful!",
+        description: `We've received your request and sent confirmation emails.`,
+      });
+      
+      // Reset form after a delay
+      setTimeout(() => {
+        form.reset();
+        setIsSubmitted(false);
+        onClose();
+      }, 3000);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Error",
+        description: "There was an error submitting your request. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

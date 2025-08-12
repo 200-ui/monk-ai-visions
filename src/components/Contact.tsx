@@ -1,13 +1,14 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Phone, Mail, MapPin, Send } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, Loader2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 export const Contact = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -60,6 +61,8 @@ export const Contact = () => {
     }
     
     try {
+      setIsLoading(true);
+      
       // Call the email service
       const response = await fetch('https://fwnsfbpjlhnoaskcxvat.supabase.co/functions/v1/send-emails', {
         method: 'POST',
@@ -94,6 +97,8 @@ export const Contact = () => {
         description: "There was an error sending your message. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
   
@@ -137,9 +142,19 @@ export const Contact = () => {
                 </div>
                 <Button 
                   type="submit" 
+                  disabled={isLoading}
                   className="w-full bg-monk hover:bg-monk/90 transition-colors text-white"
                 >
-                  <Send className="w-4 h-4 mr-2" /> Send Message
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Sending Message...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" /> Send Message
+                    </>
+                  )}
                 </Button>
               </form>
             </div>

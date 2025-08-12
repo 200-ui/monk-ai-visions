@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
@@ -17,7 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { CalendarIcon, CheckCircle2 } from 'lucide-react';
+import { CalendarIcon, CheckCircle2, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -45,6 +44,7 @@ interface BookCallModalProps {
 
 export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -60,6 +60,8 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      setIsLoading(true);
+      
       // Call the email service
       const response = await fetch('https://fwnsfbpjlhnoaskcxvat.supabase.co/functions/v1/send-emails', {
         method: 'POST',
@@ -95,10 +97,12 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
       setTimeout(() => {
         form.reset();
         setIsSubmitted(false);
+        setIsLoading(false);
         onClose();
       }, 3000);
     } catch (error) {
       console.error('Error submitting form:', error);
+      setIsLoading(false);
       toast({
         title: "Error",
         description: "There was an error submitting your request. Please try again.",
@@ -275,8 +279,19 @@ export const BookCallModal = ({ isOpen, onClose }: BookCallModalProps) => {
                 )}
               />
 
-              <Button type="submit" className="w-full bg-monk hover:bg-monk/90">
-                Book Your Call
+              <Button 
+                type="submit" 
+                disabled={isLoading}
+                className="w-full bg-monk hover:bg-monk/90"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Booking Your Call...
+                  </>
+                ) : (
+                  'Book Your Call'
+                )}
               </Button>
             </form>
           </Form>

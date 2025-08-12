@@ -150,6 +150,9 @@ function generateUserConfirmationEmail(type: string, formData: any): string {
             <p style="color: #6b7280; font-size: 12px; margin: 5px 0;">
               📍 123 AI Avenue, Tech City, TC 12345
             </p>
+            <p style="color: #f5f5f5; font-size: 14px; margin: 10px 0;">
+              themachinemonk.ai@gmail.com
+            </p>
           </div>
         </div>
       </div>

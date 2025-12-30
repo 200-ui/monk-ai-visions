@@ -50,7 +50,7 @@ const services = [
 export const Services = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
+  const scrollPositionRef = useRef(0);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -81,26 +81,25 @@ export const Services = () => {
     };
   }, []);
 
-  // Auto-scroll animation
+  // Auto-scroll animation - continuous, no pause
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
 
     let animationId: number;
-    let scrollPosition = 0;
     const scrollSpeed = 0.5;
 
     const animate = () => {
-      if (!isPaused && scrollContainer) {
-        scrollPosition += scrollSpeed;
+      if (scrollContainer) {
+        scrollPositionRef.current += scrollSpeed;
         
         // Reset scroll position when reaching the end of first set
         const maxScroll = scrollContainer.scrollWidth / 2;
-        if (scrollPosition >= maxScroll) {
-          scrollPosition = 0;
+        if (scrollPositionRef.current >= maxScroll) {
+          scrollPositionRef.current = 0;
         }
         
-        scrollContainer.scrollLeft = scrollPosition;
+        scrollContainer.scrollLeft = scrollPositionRef.current;
       }
       animationId = requestAnimationFrame(animate);
     };
@@ -110,7 +109,7 @@ export const Services = () => {
     return () => {
       cancelAnimationFrame(animationId);
     };
-  }, [isPaused]);
+  }, []);
 
   // Duplicate services for infinite scroll effect
   const duplicatedServices = [...services, ...services];
@@ -129,14 +128,12 @@ export const Services = () => {
       {/* Horizontal Scrolling Container */}
       <div 
         ref={scrollRef}
-        className="flex gap-6 overflow-x-hidden cursor-pointer px-4"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
+        className="flex gap-6 overflow-x-hidden px-4"
       >
         {duplicatedServices.map((service, index) => (
           <div 
             key={index} 
-            className="flex-shrink-0 w-[350px] bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+            className="flex-shrink-0 w-[350px] bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl p-6 shadow-sm"
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold dark:text-white pr-3">{service.title}</h3>

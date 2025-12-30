@@ -12,36 +12,49 @@ import { LoadingAnimation } from '@/components/LoadingAnimation';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    // Simulate loading complete after animation finishes
+    // Ensure dark mode class is preserved during mount
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.documentElement.classList.add('dark');
+    }
+
+    // Show loading animation
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000); // Match the animation duration in LoadingAnimation.tsx
+      // Small delay before showing content to prevent flash
+      requestAnimationFrame(() => {
+        setShowContent(true);
+      });
+    }, 2000);
     
     return () => clearTimeout(timer);
   }, []);
 
+  // During loading, maintain theme-aware background
+  if (isLoading) {
+    return <LoadingAnimation />;
+  }
+
   return (
-    <>
-      {isLoading ? (
-        <LoadingAnimation />
-      ) : (
-        <div className="min-h-screen flex flex-col">
-          <Navbar />
-          <main className="flex-grow">
-            <Hero />
-            <Features />
-            <Services />
-            <Process />
-            <Contact />
-          </main>
-          <Footer />
-          <BackToTop />
-        </div>
-      )}
-    </>
+    <div className={`min-h-screen flex flex-col bg-background transition-opacity duration-300 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
+      <Navbar />
+      <main className="flex-grow">
+        <Hero />
+        <Features />
+        <Services />
+        <Process />
+        <Contact />
+      </main>
+      <Footer />
+      <BackToTop />
+    </div>
   );
 };
 
 export default Index;
+

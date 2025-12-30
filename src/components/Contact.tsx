@@ -172,8 +172,7 @@ export const Contact = () => {
                   </div>
                   <div className="ml-4">
                     <h4 className="font-semibold dark:text-white">Phone</h4>
-                    <p className="text-charcoal/70 dark:text-gray-400">+1 (555) 123-4567</p>
-                    <p className="text-charcoal/70 dark:text-gray-400">Mon-Fri: 9am - 5pm EST</p>
+                    <p className="text-charcoal/70 dark:text-gray-400">+977 - 9869112525</p>
                   </div>
                 </div>
                 
@@ -183,8 +182,7 @@ export const Contact = () => {
                   </div>
                   <div className="ml-4">
                     <h4 className="font-semibold dark:text-white">Email</h4>
-                    <p className="text-charcoal/70 dark:text-gray-400">info@themachinemonk.com</p>
-                    <p className="text-charcoal/70 dark:text-gray-400">support@themachinemonk.com</p>
+                    <p className="text-charcoal/70 dark:text-gray-400">themachinemonk.ai@gmail.com</p>
                   </div>
                 </div>
                 
@@ -194,8 +192,7 @@ export const Contact = () => {
                   </div>
                   <div className="ml-4">
                     <h4 className="font-semibold dark:text-white">Location</h4>
-                    <p className="text-charcoal/70 dark:text-gray-400">123 AI Avenue</p>
-                    <p className="text-charcoal/70 dark:text-gray-400">Tech City, TC 12345</p>
+                    <p className="text-charcoal/70 dark:text-gray-400">Kathmandu, Nepal</p>
                   </div>
                 </div>
               </div>

@@ -2,7 +2,7 @@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { Facebook, Twitter, Linkedin, Instagram, Mail, ArrowRight } from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 export const Footer = () => {
   const handleSubscribe = (e: React.FormEvent) => {
@@ -35,23 +35,6 @@ export const Footer = () => {
               <span className="font-bold text-xl">
                 The Machine Monk
               </span>
-            </div>
-            <p className="text-gray-300 mt-4">
-              Empowering businesses with the wisdom of AI. Innovative solutions for the modern enterprise.
-            </p>
-            <div className="flex space-x-4 pt-2">
-              <a href="#" className="text-gray-300 hover:text-monk transition-colors hover-scale">
-                <Facebook size={20} />
-              </a>
-              <a href="#" className="text-gray-300 hover:text-monk transition-colors hover-scale">
-                <Twitter size={20} />
-              </a>
-              <a href="#" className="text-gray-300 hover:text-monk transition-colors hover-scale">
-                <Linkedin size={20} />
-              </a>
-              <a href="#" className="text-gray-300 hover:text-monk transition-colors hover-scale">
-                <Instagram size={20} />
-              </a>
             </div>
           </div>
 

@@ -10,9 +10,17 @@ import { Footer } from '@/components/Footer';
 import { BackToTop } from '@/components/BackToTop';
 import { LoadingAnimation } from '@/components/LoadingAnimation';
 
+const LOADING_SHOWN_KEY = 'tmm_loading_shown';
+
 const Index = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [showContent, setShowContent] = useState(false);
+  const [isLoading, setIsLoading] = useState(() => {
+    // Only show loading on first visit
+    return !sessionStorage.getItem(LOADING_SHOWN_KEY);
+  });
+  const [showContent, setShowContent] = useState(() => {
+    // If loading was already shown, show content immediately
+    return !!sessionStorage.getItem(LOADING_SHOWN_KEY);
+  });
 
   useEffect(() => {
     // Ensure dark mode class is preserved during mount
@@ -23,10 +31,15 @@ const Index = () => {
       document.documentElement.classList.add('dark');
     }
 
-    // Show loading animation
+    // If loading already shown, skip
+    if (sessionStorage.getItem(LOADING_SHOWN_KEY)) {
+      return;
+    }
+
+    // Show loading animation only on first visit
     const timer = setTimeout(() => {
       setIsLoading(false);
-      // Small delay before showing content to prevent flash
+      sessionStorage.setItem(LOADING_SHOWN_KEY, 'true');
       requestAnimationFrame(() => {
         setShowContent(true);
       });
@@ -35,7 +48,6 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // During loading, maintain theme-aware background
   if (isLoading) {
     return <LoadingAnimation />;
   }

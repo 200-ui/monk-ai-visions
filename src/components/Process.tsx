@@ -97,7 +97,7 @@ export const Process = () => {
             />
           </svg>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
             {processSteps.map((step, index) => {
               const isHigh = index % 2 === 0;
               const isVisible = visibleSteps.includes(step.id);
@@ -118,16 +118,6 @@ export const Process = () => {
                       : 'translateY(4rem)'
                   }}
                 >
-                  {/* Step Number Badge */}
-                  <div className={`
-                    w-10 h-10 rounded-full bg-monk text-white 
-                    flex items-center justify-center font-bold text-lg mb-4
-                    shadow-lg transition-all duration-500
-                    ${isVisible ? 'scale-100' : 'scale-0'}
-                  `}>
-                    {step.id}
-                  </div>
-
                   {/* Icon */}
                   <div className={`
                     ${step.color} p-4 rounded-full inline-flex items-center justify-center mb-4 
